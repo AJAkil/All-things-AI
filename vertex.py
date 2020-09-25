@@ -42,6 +42,10 @@ class Vertex:
         neighbors = [neighbor.name for neighbor in self.neighbors]
         return f'name: {self.name} neighbors: {neighbors}'
 
+    def print_neighbor_color(self):
+        neighbors = [neighbor.color for neighbor in self.neighbors]
+        print(neighbors)
+
 
     
 

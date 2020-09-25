@@ -1,4 +1,5 @@
-# f = open('yor-f-83.stu','r+')
+f = open('yor-f-83.stu','r+')
+print(f.name)
 
 
 # i = 0

@@ -1,9 +1,11 @@
 from vertex import Vertex
+import random as rd
 
 class Graph:
     def __init__(self):
         self.vertices = {} # A dictionary containing node name and object as value
         self.no_of_vertices = 0
+        self.avg_penalty = -1
 
 
     def add_vertex(self, vertex):
@@ -62,14 +64,31 @@ class Graph:
                     self.vertices[course].add_neighbor_undirected(self.vertices[neighbor])
                     #print(self.vertices[course])
 
-    def greedy_color(self):
+    def sort_by_degree(self):
+        vertices_list = [value for value in self.vertices.values()]
+        vertices_list.sort(key=lambda x: x.get_vertex_degree(), reverse=True)
+
+        for vertex in vertices_list:
+            print(vertex.name, vertex.get_vertex_degree())
+
+    def greedy_color(self, choice='default'):
 
         max_colors = -999999
+        vertices_list = []
 
-        # this is temporary, we get the list of all the keys of the graph
-        vertices_list = list(self.vertices.keys())
+        if choice == 'random':
+            vertices_list = list(self.vertices.keys())
+            rd.shuffle(vertices_list)
+        elif choice == 'degree_sorted':
+            vertices_list = [value for value in self.vertices.values()]
+            vertices_list.sort(key=lambda x: x.get_vertex_degree(), reverse=True)
+            vertices_list = [vertex.name for vertex in vertices_list]
+        elif choice == 'default':
+            # we get the list of all the vertices of the graph serially
+            vertices_list = list(self.vertices.keys())
 
-        # a temporary dictionary to store the available colors
+
+        # a temporary list to store the available colors
         # true for colors[index] means that the indexed vertex color is true
         # used for checking the colors of the neghbors of a certain vertex
         colors = [False for _ in vertices_list]
@@ -92,7 +111,7 @@ class Graph:
                     break
 
 
-            # assign the found color
+            # assign the color
             self.vertices[vertices_list[i]].color = available_color
 
             # keep track of the max color
@@ -108,6 +127,26 @@ class Graph:
     def print_allnode_colors(self):
         for index, node in self.vertices.items():
             print(f'node = {index} ---> color = {node.color}')
+
+    def cal_avg_penalty(self,f):
+
+        slots = []
+
+        # we traverse the file
+        for row in f:
+            courses = row.split()
+
+            for index, course in enumerate(courses):
+                slots.append(self.vertices[str(course)].color)
+            
+            # sorting the slots from low to high
+            slots.sort()
+            print(slots)
+
+
+    def print_result(self,f):
+        pass
+
 
 
 
