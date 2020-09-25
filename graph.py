@@ -6,6 +6,7 @@ class Graph:
         self.vertices = {} # A dictionary containing node name and object as value
         self.no_of_vertices = 0
         self.avg_penalty = -1
+        self.colors_needed = 0
 
 
     def add_vertex(self, vertex):
@@ -122,7 +123,8 @@ class Graph:
                 if self.vertices[neighbor.name].color != -1:
                     colors[self.vertices[neighbor.name].color] = False
 
-        print('Total time slots: ', max(max_colors)+1)
+        #print('Total time slots: ', max(max_colors)+1)
+        self.colors_needed = max(max_colors) + 1
 
     def print_allnode_colors(self):
         for index, node in self.vertices.items():
@@ -165,7 +167,7 @@ class Graph:
 
 
     def print_result(self,f):
-        pass
+        print(f'Dataset: {f.name} TimeSlot: {self.colors_needed} Penalty: {self.avg_penalty}')
 
 
 

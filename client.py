@@ -56,7 +56,7 @@ g.greedy_color(choice='degree_sorted')
 #g.print_all_neighbor_color()
 f = open('yor-f-83.stu','r+')
 g.cal_avg_penalty(f)
-print(g.avg_penalty)
+g.print_result(f)
 #g.print_allnode_colors()
 
 
