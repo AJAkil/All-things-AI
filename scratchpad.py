@@ -24,3 +24,9 @@
 # print(a.x[0].name)
 # b.name='monir'
 # print(a.x[0].name)
+
+a=10
+b=20
+
+a = max(a,b)
+print(a)
