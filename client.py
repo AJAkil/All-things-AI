@@ -45,16 +45,20 @@ g = Graph()
 # g.greedy_color()
 # g.print_allnode_colors()
 
-f = open('car-s-91.stu','r+')
+#f = open('car-s-91.stu','r+')
+#f = open('ear-f-83.stu','r+')
+f = open('yor-f-83.stu','r+')
+#f = open('test.txt','r+')
 g.construct_graph(f)
+# print(max(list(g.get_all_vertices_degree().values())))
 #g.print_graph()
-#g.sort_by_degree()
 g.greedy_color(choice='degree_sorted')
-f = open('car-s-91.stu','r+')
+#g.print_all_neighbor_color()
+f = open('yor-f-83.stu','r+')
 g.cal_avg_penalty(f)
+print(g.avg_penalty)
 #g.print_allnode_colors()
 
 
-# print(len([n.name for n in g.vertices['0031'].neighbors]))
-# print(set([n.name for n in g.vertices['0031'].neighbors]))
+
             

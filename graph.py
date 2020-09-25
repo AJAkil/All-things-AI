@@ -46,7 +46,7 @@ class Graph:
             print()
 
     def get_all_vertices_degree(self):
-        return {key: value.get_vertex_degree() for key, value in self.vertices.item()}
+        return {key: value.get_vertex_degree() for key, value in self.vertices.items()}
 
     def construct_graph(self, file_object):
         for row in file_object:
@@ -73,7 +73,7 @@ class Graph:
 
     def greedy_color(self, choice='default'):
 
-        max_colors = -999999
+        max_colors = set()
         vertices_list = []
 
         if choice == 'random':
@@ -115,33 +115,53 @@ class Graph:
             self.vertices[vertices_list[i]].color = available_color
 
             # keep track of the max color
-            max_colors = max(max_colors, available_color)
+            max_colors.add(available_color)
 
             # resetting the value to false for next iteration
             for neighbor in self.vertices[vertices_list[i]].neighbors:
                 if self.vertices[neighbor.name].color != -1:
                     colors[self.vertices[neighbor.name].color] = False
 
-        print('Total time slots: ',max_colors+1)
+        print('Total time slots: ', max(max_colors)+1)
 
     def print_allnode_colors(self):
         for index, node in self.vertices.items():
             print(f'node = {index} ---> color = {node.color}')
 
+    def print_all_neighbor_color(self):
+        for index, node in self.vertices.items():
+            print(f'node = {node.name} ---> color = {node.color}')
+            print(f'Neighbor colors: {node.print_neighbor_color()}')
+
     def cal_avg_penalty(self,f):
-
-        slots = []
-
+        penalty_per_student = []
+        
         # we traverse the file
         for row in f:
+            temp_sum = 0
+            slots = []
             courses = row.split()
 
             for index, course in enumerate(courses):
-                slots.append(self.vertices[str(course)].color)
+                slots.append(self.vertices[course].color)
             
             # sorting the slots from low to high
             slots.sort()
-            print(slots)
+            # now we traverse the array pair wise and then we calculate the penalty
+            for i in range(len(slots)-1):
+                exam_gap = slots[i+1] - slots[i]
+                if 1 <= exam_gap <= 5:
+                    temp_sum += 2 ** (5-exam_gap)
+                else:
+                    temp_sum += 0
+            penalty_per_student.append(temp_sum)
+
+        self.avg_penalty = self.get_avg(penalty_per_student)
+
+    @staticmethod
+    def get_avg(penalty_list):
+        return  sum(penalty_list)/len(penalty_list)
+
 
 
     def print_result(self,f):
