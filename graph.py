@@ -66,6 +66,8 @@ class Graph:
                     self.vertices[course].add_neighbor_undirected(self.vertices[neighbor])
                     #print(self.vertices[course])
 
+        file_object.seek(0)
+
     def sort_by_degree(self):
         vertices_list = [value for value in self.vertices.values()]
         vertices_list.sort(key=lambda x: x.get_vertex_degree(), reverse=True)
@@ -221,6 +223,8 @@ class Graph:
 
         self.avg_penalty = self.get_avg(penalty_per_student)
 
+        f.seek(0)
+
     @staticmethod
     def get_avg(penalty_list):
         return  sum(penalty_list)/len(penalty_list)
@@ -229,6 +233,7 @@ class Graph:
 
     def print_result(self,f):
         print(f'Dataset: {f.name} TimeSlot: {self.colors_needed} Penalty: {self.avg_penalty}')
+        f.seek(0)
 
 
 
