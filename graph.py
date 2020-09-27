@@ -152,7 +152,7 @@ class Graph:
         if len(random_node.neighbors) == 0:
             while True:
                 random_node = rd.choice(vertices_list)
-                if len(random_node.neighbors > 0):
+                if len(random_node.neighbors) > 0:
                     break
 
         random_node2 = random_node.neighbors[0]
