@@ -145,7 +145,16 @@ class Graph:
         q = Queue()
 
         # Choose two random colors and save it to a list
-        random_node = rd.choice([node for node in self.vertices.values()])
+        vertices_list = [node for node in self.vertices.values()]
+        random_node = rd.choice(vertices_list)
+
+        # Handling an edge case here
+        if len(random_node.neighbors) == 0:
+            while True:
+                random_node = rd.choice(vertices_list)
+                if len(random_node.neighbors > 0):
+                    break
+
         random_node2 = random_node.neighbors[0]
         allowed_colors = [random_node.color, random_node2.color]
 
