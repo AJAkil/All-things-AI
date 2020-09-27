@@ -3,6 +3,7 @@ class Vertex:
         self.name = name
         self.color = -1
         self.blame = -1
+        self.checked = False
         self.neighbors = []
 
     def add_neighbor_directed(self, v):

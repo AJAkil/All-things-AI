@@ -1,5 +1,6 @@
 from vertex import Vertex
 import random as rd
+from queue import Queue
 
 class Graph:
     def __init__(self):
@@ -125,6 +126,57 @@ class Graph:
 
         #print('Total time slots: ', max(max_colors)+1)
         self.colors_needed = max(max_colors) + 1
+
+    def reset_marker(self):
+        for node in self.vertices.values():
+            node.checked = False
+
+    @staticmethod
+    def alter_color(colors, color_to_alter):
+        if colors[0] == color_to_alter:
+            return colors[1]
+        elif colors[1] == color_to_alter:
+            return colors[0]
+
+
+    def operate_kempe_chain(self):
+        
+        # Declare the Queue to operate
+        q = Queue()
+
+        # Choose two random colors and save it to a list
+        random_node = rd.choice([node for node in self.vertices.values()])
+        random_node2 = random_node.neighbors[0]
+        allowed_colors = [random_node.color, random_node2.color]
+
+        # Resetting the marker of all the vertices
+        self.reset_marker()
+        #print(allowed_colors)
+
+        # Altering the color of the first random node
+        self.vertices[random_node.name].color = self.alter_color(allowed_colors, random_node.color)
+
+        # Push the first random node to the Q
+        q.put(self.vertices[random_node.name])
+
+        # Start the queue processing loop
+        while not q.empty():
+            # Getting the first node
+            node = q.get()
+
+            # looping through the neigbors to see if any of the colors
+            # conflict with the node. If color conflict, then we alternate it's color and
+            # push the node to the Q. After that we check mark the main 'node' in Question
+            # as it's processing is finished
+            for neighbor in node.neighbors:
+                if self.vertices[neighbor.name].checked == False:
+                    if self.vertices[neighbor.name].color == self.vertices[node.name].color:
+                        self.vertices[neighbor.name].color = self.alter_color(allowed_colors, self.vertices[neighbor.name].color)
+                        q.put(self.vertices[neighbor.name])
+            
+            self.vertices[node.name].checked = True
+
+        print('Kempe operator applied to the graph')
 
     def print_allnode_colors(self):
         for index, node in self.vertices.items():
