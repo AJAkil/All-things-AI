@@ -4,6 +4,7 @@ class Vertex:
         self.color = -1
         self.blame = -1
         self.checked = False
+        self.sat_degree = 0
         self.neighbors = []
 
     def add_neighbor_directed(self, v):
@@ -49,6 +50,23 @@ class Vertex:
         print(neighbor_name)
         print(neighbors)
 
+    def get_saturation_degree(self):
+        unique_color = set()
+        for neighbor in self.neighbors:
+            if neighbor.color != -1:
+                unique_color.add(neighbor.color)
+
+        self.sat_degree = len(unique_color)
+        
+        return self.sat_degree
+
+    def set_saturation_degree(self):
+        unique_color = set()
+        for neighbor in self.neighbors:
+            if neighbor.color != -1:
+                unique_color.add(neighbor.color)
+
+        self.sat_degree = len(unique_color)
 
 
     

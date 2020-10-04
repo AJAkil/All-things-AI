@@ -94,7 +94,7 @@ class Graph:
 
         # a temporary list to store the available colors
         # true for colors[index] means that the indexed vertex color is true
-        # used for checking the colors of the neghbors of a certain vertex
+        # used for checking the colors of the neighbors of a certain vertex
         colors = [False for _ in vertices_list]
 
         # we assign first color to the first vertex
@@ -139,7 +139,6 @@ class Graph:
             return colors[1]
         elif colors[1] == color_to_alter:
             return colors[0]
-
 
     def operate_kempe_chain(self):
         
@@ -230,10 +229,95 @@ class Graph:
         return  sum(penalty_list)/len(penalty_list)
 
 
-
     def print_result(self,f):
         print(f'Dataset: {f.name} TimeSlot: {self.colors_needed} Penalty: {self.avg_penalty}')
         f.seek(0)
+
+    def dsatur_algo_naive(self):
+        
+        # variable to keep track of colored nodes
+        colored = 0
+        temp_list = []
+        max_colors = set()
+
+        # get the order initially according to degree of nodes
+        vertices_list = [value for value in self.vertices.values()]
+        vertices_list.sort(key=lambda x: x.get_vertex_degree(), reverse=True)
+
+        # a temporary list to store the available colors
+        # true for colors[index] means that the indexed vertex color is true
+        # used for checking the colors of the neighbors of a certain vertex
+        colors = [False for _ in vertices_list]
+
+        # we assign first color to the first vertex
+        self.vertices[vertices_list[0].name].color = 0
+        colored += 1
+
+        # then we take out the first vertex from the vertices list
+        vertices_list.pop(0)
+        #print(vertices_list)
+
+        # running the loop untill all the nodes are colored
+        while colored < len(self.vertices.items()):
+            temp_list = []
+
+            # then we update the vertices list according to saturation degree
+            vertices_list.sort(key=lambda x: x.get_saturation_degree(), reverse=True)
+            #print('vertices list after saturation degree\n', vertices_list)
+
+            top_saturated_node = vertices_list[0]
+            temp_list = [vertex for vertex in vertices_list if top_saturated_node.sat_degree == vertex.sat_degree]
+
+            # then we again sort the vertices according to degree to break the tie
+            temp_list.sort(key=lambda x: x.get_vertex_degree(), reverse=True)
+            #print('temp list after sorting by degree\n', temp_list)
+
+            top_degree_node = temp_list[0]
+            temp_list = [vertex for vertex in temp_list if top_degree_node.get_vertex_degree() == vertex.get_vertex_degree()]
+            #print('temp list after filtering the ones with highest degree\n', temp_list)
+
+            # We randomly choose a vertex after this
+            node_to_color = temp_list[rd.randint(0, len(temp_list)-1)]
+
+            #print('Node to Color: ', node_to_color.name)
+
+            # we pop this vertex from the vertices_list
+            vertices_list.pop(vertices_list.index(node_to_color))
+
+            # then we color this particular vertex
+            # we process all adjacent vertices of ith vertex and flag their colors as not available
+            for neighbor in self.vertices[node_to_color.name].neighbors:
+                if self.vertices[neighbor.name].color != -1:
+                    colors[self.vertices[neighbor.name].color] = True # marking the neighbor's color as True means unavailable.
+
+            # find the first available color
+            available_color = -1
+            for index, state in enumerate(colors):
+                if state == False:
+                    available_color = index
+                    break
+
+
+            # assign the color
+            self.vertices[node_to_color.name].color = available_color
+            colored += 1
+
+            #print(f'Node: {node_to_color.name} colored to: {available_color}')
+
+            # keep track of the max color
+            max_colors.add(available_color)
+
+            # resetting the value to false for next iteration
+            for neighbor in self.vertices[node_to_color.name].neighbors:
+                if self.vertices[neighbor.name].color != -1:
+                    colors[self.vertices[neighbor.name].color] = False
+
+        print('Total time slots: ', max(max_colors)+1)
+        self.colors_needed = max(max_colors) + 1
+
+
+    def dsatur_algo_eff(self):
+        pass
 
 
 

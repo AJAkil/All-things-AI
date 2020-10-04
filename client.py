@@ -5,7 +5,7 @@ import copy
 
 file_name = input('Enter the name of the file please: ')
 method = input('Enter Number of the coloring method please!\
-    Methods includes: \n 1. Degree Sorted \n 2. Random Ordering \n 3. Default\n')
+    Methods includes: \n 1. Degree Sorted \n 2. Random Ordering \n 3. DSature\n')
 choice = ''
 
 if method == '1':
