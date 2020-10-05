@@ -1,6 +1,7 @@
 from vertex import Vertex
 import random as rd
 from queue import Queue
+import heapq
 
 class Graph:
     def __init__(self):
@@ -8,7 +9,6 @@ class Graph:
         self.no_of_vertices = 0
         self.avg_penalty = -1
         self.colors_needed = 0
-
 
     def add_vertex(self, vertex):
         if isinstance(vertex, Vertex) and vertex.name not in self.vertices:
@@ -186,7 +186,7 @@ class Graph:
             
             self.vertices[node.name].checked = True
 
-        print('Kempe operator applied to the graph')
+        #print('Kempe operator applied to the graph')
 
     def print_allnode_colors(self):
         for index, node in self.vertices.items():
@@ -228,9 +228,9 @@ class Graph:
     def get_avg(penalty_list):
         return  sum(penalty_list)/len(penalty_list)
 
-
     def print_result(self,f):
-        print(f'Dataset: {f.name} TimeSlot: {self.colors_needed} Penalty: {self.avg_penalty}')
+        dataset = f.name.split('\\')[2]
+        print(f'Dataset: {dataset} TimeSlot: {self.colors_needed} Penalty: {self.avg_penalty}')
         f.seek(0)
 
     def dsatur_algo_naive(self):
@@ -315,9 +315,68 @@ class Graph:
         print('Total time slots: ', max(max_colors)+1)
         self.colors_needed = max(max_colors) + 1
 
-
     def dsatur_algo_eff(self):
-        pass
+        
+        # push all the vertices to the max heap list
+        heap_list = [vertex for vertex in self.vertices.values()]
+        heapq.heapify(heap_list)
+
+        # boolean color array
+        colors = [False for _ in self.vertices.values()]
+
+        # A variable to keep track of the number of nodes that's colored
+        colored = 0
+
+        max_colors = set()
+
+        while colored < len(self.vertices.values()):
+
+            node_to_color = heapq.heappop(heap_list)
+
+            # then we color this particular vertex
+            # we process all adjacent vertices of ith vertex and flag their colors as not available
+            for neighbor in self.vertices[node_to_color.name].neighbors:
+                if self.vertices[neighbor.name].color != -1:
+                    colors[self.vertices[neighbor.name].color] = True # marking the neighbor's color as True means unavailable.
+
+            # find the first available color
+            available_color = -1
+            for index, state in enumerate(colors):
+                if state == False:
+                    available_color = index
+                    break
+
+
+            # assign the color
+            self.vertices[node_to_color.name].color = available_color
+            colored += 1
+
+            #print(f'Node: {node_to_color.name} colored to: {available_color}')
+
+            # keep track of the max color
+            max_colors.add(available_color)
+
+            # resetting the value to false for next iteration
+            for neighbor in self.vertices[node_to_color.name].neighbors:
+                if self.vertices[neighbor.name].color != -1:
+                    colors[self.vertices[neighbor.name].color] = False
+
+            # we update the saturation degree of the neighbors of the node 
+            # that is colored and we push the newly updated nodes to the heapq
+
+            for neighbor in node_to_color.neighbors:
+                if neighbor.color == -1:
+                    heap_list[heap_list.index(neighbor)].get_saturation_degree()
+            
+            heapq.heapify(heap_list)
+
+        print('Total time slots: ', max(max_colors)+1)
+        self.colors_needed = max(max_colors) + 1
+
+
+
+
+
 
 
 

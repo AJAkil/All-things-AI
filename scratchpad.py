@@ -106,17 +106,32 @@
 
 # print(v)
 from graph import *
+import os
+import sys
 
 
 file_name = input('Enter the name of the file please: ')
 
-f = open(file_name,'r+')
+f = open(os.path.join('.\\test_cases',file_name),'r+')
 g = Graph()
 g.construct_graph(f)
 
 #g.print_graph()
 
-g.dsatur_algo_naive()
+#g.dsatur_algo_naive()
+g.dsatur_algo_eff()
 g.cal_avg_penalty(f)
 g.print_result(f)
+
+# min_penalty = sys.maxsize
+
+# for i in range(1000):
+#     g.operate_kempe_chain()
+#     g.cal_avg_penalty(f)
+#     min_penalty = min(min_penalty, g.avg_penalty)
+
+# g.cal_avg_penalty(f)
+# g.print_result(f)
+
+# print(min_penalty)
 

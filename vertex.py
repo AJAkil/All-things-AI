@@ -60,13 +60,11 @@ class Vertex:
         
         return self.sat_degree
 
-    def set_saturation_degree(self):
-        unique_color = set()
-        for neighbor in self.neighbors:
-            if neighbor.color != -1:
-                unique_color.add(neighbor.color)
+    def __lt__(self, other):
+        if isinstance(other, Vertex):
+            return self.sat_degree > other.sat_degree if self.sat_degree != other.sat_degree  else \
+            self.get_vertex_degree() > other.get_vertex_degree()
 
-        self.sat_degree = len(unique_color)
 
 
     
