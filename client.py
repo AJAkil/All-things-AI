@@ -1,6 +1,7 @@
 from graph import *
 import sys
 import copy
+import os
 
 
 file_name = input('Enter the name of the file please: ')
@@ -15,7 +16,7 @@ elif method == '2':
 elif method == '3':
     choice = 'default'
 
-f = open(file_name,'r+')
+f = open(os.path.join('.\\test_cases',file_name),'r+')
 g = Graph()
 g.construct_graph(f)
 

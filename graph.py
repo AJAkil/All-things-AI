@@ -14,6 +14,7 @@ class Graph:
         self.avg_penalty = -1
         self.colors_needed = 0
         self.bakcup_graph_state = {}
+        self.minimum_penalty = -1
 
     def add_vertex(self, vertex):
         if isinstance(vertex, Vertex) and vertex.name not in self.vertices:
@@ -398,6 +399,7 @@ class Graph:
 
             if min_penalty > self.avg_penalty:
                 min_penalty = self.avg_penalty
+                print(min_penalty)
                 self.backup_graph_state.clear()
                 self.backup_graph_state = {key:value.color for key,value in self.vertices.items()}
             else:
@@ -406,6 +408,7 @@ class Graph:
                     self.vertices[key].color = value
 
         print('Final penalty becomes: ',min_penalty)
+        self.minimum_penalty = min_penalty
 
 
 

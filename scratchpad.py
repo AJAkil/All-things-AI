@@ -109,6 +109,9 @@ from graph import *
 import os
 import sys
 
+iterations = [50, 100, 200, 500, 1000]
+
+dirs = os.listdir('.\\final_tests')
 
 file_name = input('Enter the name of the file please: ')
 iteration = input('Enter the iteration please: ')
@@ -121,8 +124,10 @@ g.construct_graph(f)
 #g.print_graph()
 
 #g.dsatur_algo_naive()
-g.dsatur_algo_eff()
+# g.dsatur_algo_eff()
+choice=input('choice: ')
+g.greedy_color(choice=choice) if choice != 'dsatur' else g.dsatur_algo_eff()
 g.stochastic_hill_climbing(int(iteration),f)
-f2.write('  '.join([f.name.split('\\')[2], iteration , str(g.colors_needed), str(g.avg_penalty),'\n']))
+f2.write('  '.join([f.name.split('\\')[2], iteration , str(g.colors_needed), str(g.minimum_penalty), choice, '\n']))
 
 
