@@ -2,6 +2,8 @@ from vertex import Vertex
 import random as rd
 from queue import Queue
 import heapq
+import copy as cp
+import sys
 
 class Graph:
     def __init__(self):
@@ -9,6 +11,7 @@ class Graph:
         self.no_of_vertices = 0
         self.avg_penalty = -1
         self.colors_needed = 0
+        self.bakcup_graph_state = {}
 
     def add_vertex(self, vertex):
         if isinstance(vertex, Vertex) and vertex.name not in self.vertices:
@@ -373,6 +376,26 @@ class Graph:
         print('Total time slots: ', max(max_colors)+1)
         self.colors_needed = max(max_colors) + 1
 
+    def stochastic_hill_climbing(self, iterations,f):
+        
+        # making a backup of our current state i.e the graph's color
+        self.backup_graph_state = {key:value.color for key,value in self.vertices.items()}
+        min_penalty = sys.maxsize
+
+        for _ in range(iterations):
+            self.operate_kempe_chain()
+            self.cal_avg_penalty(f)
+
+            if min_penalty > self.avg_penalty:
+                min_penalty = self.avg_penalty
+                self.backup_graph_state.clear()
+                self.backup_graph_state = {key:value.color for key,value in self.vertices.items()}
+            else:
+                # going to the previous state since it's not suitable
+                for key,value in self.backup_graph_state.items():
+                    self.vertices[key].color = value
+
+        print('Final penalty becomes: ',min_penalty)
 
 
 

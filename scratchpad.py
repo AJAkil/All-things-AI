@@ -120,8 +120,9 @@ g.construct_graph(f)
 
 #g.dsatur_algo_naive()
 g.dsatur_algo_eff()
-g.cal_avg_penalty(f)
-g.print_result(f)
+g.stochastic_hill_climbing(1000,f)
+# g.cal_avg_penalty(f)
+# g.print_result(f)
 
 # min_penalty = sys.maxsize
 
