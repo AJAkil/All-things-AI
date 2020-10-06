@@ -4,6 +4,8 @@ from queue import Queue
 import heapq
 import copy as cp
 import sys
+import math
+import pprint
 
 class Graph:
     def __init__(self):
@@ -212,15 +214,23 @@ class Graph:
             for index, course in enumerate(courses):
                 slots.append(self.vertices[course].color)
             
-            # sorting the slots from low to high
-            slots.sort()
-            # now we traverse the array pair wise and then we calculate the penalty
-            for i in range(len(slots)-1):
-                exam_gap = slots[i+1] - slots[i]
-                if 1 <= exam_gap <= 5:
-                    temp_sum += 2 ** (5-exam_gap)
-                else:
-                    temp_sum += 0
+            # # sorting the slots from low to high
+            # slots.sort()
+            # # now we traverse the array pair wise and then we calculate the penalty
+            # for i in range(len(slots)-1):
+            #     exam_gap = slots[i+1] - slots[i]
+            #     if 1 <= exam_gap <= 5:
+            #         temp_sum += 2 ** (5-exam_gap)
+            #     else:
+            #         temp_sum += 0
+            # penalty_per_student.append(temp_sum)
+
+            for i, c1 in enumerate(slots[0:-1]):
+                for j, c2 in enumerate(slots[i+1:]):
+                    exam_gap = abs(c1-c2)
+                    if 1 <= exam_gap <= 5:
+                        temp_sum += 2 ** (5-exam_gap)
+
             penalty_per_student.append(temp_sum)
 
         self.avg_penalty = self.get_avg(penalty_per_student)

@@ -111,8 +111,10 @@ import sys
 
 
 file_name = input('Enter the name of the file please: ')
+iteration = input('Enter the iteration please: ')
 
 f = open(os.path.join('.\\test_cases',file_name),'r+')
+f2 = open('log.txt','a+')
 g = Graph()
 g.construct_graph(f)
 
@@ -120,19 +122,7 @@ g.construct_graph(f)
 
 #g.dsatur_algo_naive()
 g.dsatur_algo_eff()
-g.stochastic_hill_climbing(1000,f)
-# g.cal_avg_penalty(f)
-# g.print_result(f)
+g.stochastic_hill_climbing(int(iteration),f)
+f2.write('  '.join([f.name.split('\\')[2], iteration , str(g.colors_needed), str(g.avg_penalty),'\n']))
 
-# min_penalty = sys.maxsize
-
-# for i in range(1000):
-#     g.operate_kempe_chain()
-#     g.cal_avg_penalty(f)
-#     min_penalty = min(min_penalty, g.avg_penalty)
-
-# g.cal_avg_penalty(f)
-# g.print_result(f)
-
-# print(min_penalty)
 
