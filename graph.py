@@ -399,7 +399,6 @@ class Graph:
 
             if min_penalty > self.avg_penalty:
                 min_penalty = self.avg_penalty
-                print(min_penalty)
                 self.backup_graph_state.clear()
                 self.backup_graph_state = {key:value.color for key,value in self.vertices.items()}
             else:
@@ -409,6 +408,11 @@ class Graph:
 
         print('Final penalty becomes: ',min_penalty)
         self.minimum_penalty = min_penalty
+
+    
+    def write_to_file(self,f):
+        for key,value in self.vertices.items():
+            f.write(' '.join([key, str(value.color),'\n']))
 
 
 
