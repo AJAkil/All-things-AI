@@ -22,16 +22,19 @@ sol = open(f'{sol_name}.sol','a+')
 g = Graph()
 g.construct_graph(f)
 
-g.greedy_color(choice=choice)
-g.write_to_file(sol)
+#g.greedy_color(choice=choice)
+g.dsatur_algo_eff()
+g.cal_avg_penalty(f)
+g.print_result(f)
+#g.write_to_file(sol)
 
 # g.cal_avg_penalty(f)
 # g.print_result(f)
 
-# g.operate_kempe_chain()
+g.operate_kempe_chain()
 
-# g.cal_avg_penalty(f)
-# g.print_result(f)
+g.cal_avg_penalty(f)
+g.print_result(f)
 
 
 

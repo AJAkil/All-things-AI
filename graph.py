@@ -162,7 +162,7 @@ class Graph:
                 if len(random_node.neighbors) > 0:
                     break
 
-        random_node2 = random_node.neighbors[0]
+        random_node2 = random_node.neighbors[rd.randint(0, len(random_node.neighbors)-1)]
         allowed_colors = [random_node.color, random_node2.color]
 
         # Resetting the marker of all the vertices
@@ -384,7 +384,7 @@ class Graph:
             
             heapq.heapify(heap_list)
 
-        print('Total time slots: ', max(max_colors)+1)
+        #print('Total time slots: ', max(max_colors)+1)
         self.colors_needed = max(max_colors) + 1
 
     def stochastic_hill_climbing(self, iterations,f):
@@ -406,7 +406,7 @@ class Graph:
                 for key,value in self.backup_graph_state.items():
                     self.vertices[key].color = value
 
-        print('Final penalty becomes: ',min_penalty)
+        #print('Final penalty becomes: ',min_penalty)
         self.minimum_penalty = min_penalty
 
     

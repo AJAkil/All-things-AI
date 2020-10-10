@@ -8,7 +8,13 @@ iterations = [ int(input('number of iteration: ' )) for _ in range(int(num_of_ex
 choices = ['random', 'degree_sorted', 'dsatur']
 
 dirs = os.listdir('.\\final_tests')
-f2 = open('log4.txt','a+')
+
+try:
+    os.remove('.\\log.txt')
+except OSError:
+    pass
+
+f2 = open('log6.txt','a+')
 
 f2.write('  '.join(['file name', 'iterations', 'slots', 'penalty', 'strategy','\n\n']))
 
@@ -23,10 +29,11 @@ for file in dirs:
             g.stochastic_hill_climbing(int(iters),f)
 
             sol_name = f.name.split('\\')[2].split('.')[0]
-            sol = open(f'{sol_name}-{choice}-kempe.sol','a+')
+            sol = open(f'{sol_name}-{choice}-kempe-{iters}.sol','a+')
             g.write_to_file(sol)
 
             f2.write('  '.join([f.name.split('\\')[2], str(iters) , str(g.colors_needed), str(g.minimum_penalty), choice+' + kempe chain ', '\n']))
+            print(f'Iteration: {iters} file: {sol_name} strategy: {choice}')
 
         f2.write(f'*********************{choice} scheme ends here*************************************\n\n')
 
