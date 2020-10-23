@@ -414,6 +414,54 @@ class Graph:
         for key,value in self.vertices.items():
             f.write(' '.join([key, str(value.color),'\n']))
 
+    def simulated_annealing(self, f, epochs):
+
+        initial_temp = 90
+        final_temp = .1
+        alpha = 0.1
+    
+        current_temp = initial_temp
+
+        self.cal_avg_penalty(f)
+        min_penalty = self.avg_penalty
+
+        # making a backup of our current state i.e the graph's color
+        self.backup_graph_state = {key:value.color for key,value in self.vertices.items()}
+
+        while current_temp > final_temp:
+
+            for _ in range(epochs):
+                
+                self.operate_kempe_chain()
+                self.cal_avg_penalty(f)
+
+                cost_diff = min_penalty - self.avg_penalty
+
+                if cost_diff > 0:
+                    min_penalty = self.avg_penalty
+                    print(min_penalty)
+                    self.backup_graph_state.clear()
+                    self.backup_graph_state = {key:value.color for key,value in self.vertices.items()}
+                else:
+                    # if the new solution is not better, accept it with a probability of e^(-cost/temp)
+                    if rd.uniform(0, 1) < math.exp(cost_diff / current_temp):
+                        min_penalty = self.avg_penalty
+                        print(min_penalty)
+                        self.backup_graph_state.clear()
+                        self.backup_graph_state = {key:value.color for key,value in self.vertices.items()}
+                    else:
+                        # going to the previous state since it's not suitable
+                        for key,value in self.backup_graph_state.items():
+                            self.vertices[key].color = value
+            
+            # decrement the temperature
+            current_temp -= alpha
+
+        self.minimum_penalty = min_penalty
+                    
+
+
+
 
 
 
