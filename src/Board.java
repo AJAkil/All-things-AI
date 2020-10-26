@@ -13,7 +13,7 @@ public class Board {
     public void printBoard(){
         for (int i = 0; i < rows ; i++) {
             for (int j = 0; j < columns ; j++) {
-                System.out.print(utility.prettifyBoard(currentBoardState[i][j]) + "   ");
+                System.out.print(Utility.prettifyBoard(currentBoardState[i][j]) + "   ");
             }
             System.out.println();
         }
