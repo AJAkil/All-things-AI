@@ -58,6 +58,8 @@ public class Board {
 
     public boolean isValidMove(int targetX, int targetY, int sourceX, int sourceY, LOA loa){
 
+        int sourceColor = this.currentBoardState[sourceX][sourceY];
+
         // checking the bounding conditions
         if ((targetX < 0 || targetX >= rows) || (targetY < 0 || targetY >= columns)){
             return false;
@@ -65,15 +67,14 @@ public class Board {
 
         // checking if the target coordinate is the same color as me
         if ( this.currentBoardState[targetX][targetY]!=0 &&
-                (this.currentBoardState[sourceX][sourceY] == this.currentBoardState[targetX][targetY])){
+                (sourceColor == this.currentBoardState[targetX][targetY])){
             return false;
         }
 
         // checking if the path to the target has any piece of opposite color
-
         int start = -1;
         int end = -1;
-        int sourceColor = this.currentBoardState[sourceX][sourceY];
+
 
         switch (loa){
             case HLOA:{
@@ -88,7 +89,8 @@ public class Board {
                 }
 
                 for (int i = start+1; i < end ; i++) {
-                    if (sourceColor!=0 && this.currentBoardState[targetX][i] != sourceColor){
+                    if (sourceColor!=0 && this.currentBoardState[targetX][i] != 0
+                            && this.currentBoardState[targetX][i] != sourceColor){
                         return false;
                     }
                 }
@@ -101,13 +103,14 @@ public class Board {
                 end = targetX;
 
                 if (targetX < sourceX){
-                    start = targetX;
-                    end = sourceX;
+                    start = targetX; //0
+                    end = sourceX; //5
 
                 }
 
                 for (int i = start+1; i < end ; i++) {
-                    if (sourceColor!=0 && this.currentBoardState[i][targetY] != sourceColor){
+                    if (sourceColor!=0 && this.currentBoardState[i][targetY]!=0
+                            && this.currentBoardState[i][targetY] != sourceColor){
                         return false;
                     }
                 }
@@ -177,6 +180,74 @@ public class Board {
 
 
     public void generateMove(int sourceX, int sourceY){
+
+        // generate possible vertical moves
+        generateVerticalMoves(sourceX, sourceY);
+
+        // generate possible horizontal moves
+        generateHorizontalMoves(sourceX, sourceY);
+
+        // generate possible diagonal-1/ left diagonal moves
+        generateDiagonal1Moves(sourceX, sourceY);
+
+        // generate possible diagonal-2/ right diagonal moves
+        generateDiagonal2Moves(sourceX, sourceY);
+
+        // check for duplicate same moves
+
+    }
+
+    private void generateDiagonal2Moves(int sourceX, int sourceY) {
+
+    }
+
+    public void generateDiagonal1Moves(int sourceX, int sourceY) {
+
+    }
+
+    public void generateVerticalMoves(int sourceX, int sourceY){
+
+        int pieces = 0;
+
+        // count the number of pieces in the column of the piece in question
+        for (int i = 0; i < rows ; i++) {
+            if (this.currentBoardState[i][sourceY]!=0){
+                pieces++;
+            }
+        }
+
+        // moving downward from source
+        if (isValidMove(sourceX + pieces, sourceY, sourceX, sourceY, LOA.VLOA)){
+            nextPossibleMoves.add(new Pair(sourceX + pieces, sourceY));
+        }
+
+         // moving upward from source
+        if (isValidMove(sourceX - pieces, sourceY, sourceX, sourceY, LOA.VLOA)){
+            nextPossibleMoves.add(new Pair(sourceX + pieces, sourceY));
+        }
+
+    }
+
+    public void generateHorizontalMoves(int sourceX, int sourceY){
+
+        int pieces = 0;
+
+        // count the number of pieces in the column of the piece in question
+        for (int i = 0; i < columns ; i++) {
+            if (this.currentBoardState[sourceX][i]!=0){
+                pieces++;
+            }
+        }
+
+        // moving right from source
+        if (isValidMove(sourceX, sourceY + pieces, sourceX, sourceY, LOA.HLOA)){
+            nextPossibleMoves.add(new Pair(sourceX, sourceY + pieces));
+        }
+
+        // moving left from source
+        if (isValidMove(sourceX, sourceY - pieces, sourceX, sourceY, LOA.HLOA)){
+            nextPossibleMoves.add(new Pair(sourceX, sourceY - pieces));
+        }
 
     }
 
