@@ -199,9 +199,96 @@ public class Board {
 
     private void generateDiagonal2Moves(int sourceX, int sourceY) {
 
+        int pieces = 0;
+
+        int currentX = sourceX;
+        int currentY = sourceY;
+
+        // using this loop to count piece of the top right part including source itself
+        while (currentX >= 0 && currentY < columns) {
+
+            if (this.currentBoardState[currentX][currentY] != 0) pieces++;
+
+            currentX--;
+            currentY++;
+
+        }
+
+        currentX = sourceX + 1;
+        currentY = sourceY - 1;
+
+        // using this loop to count piece of the bottom left part including source itself
+        while (currentX < rows && currentY >= 0) {
+
+            if (this.currentBoardState[currentX][currentY] != 0) pieces++;
+
+            currentX++;
+            currentY--;
+        }
+
+        // moving diagonally up right
+        if (isValidMove(sourceX - pieces, sourceY + pieces, sourceX, sourceY, LOA.DIAG2LOA)){
+            nextPossibleMoves.add(new Pair(sourceX - pieces, sourceY + pieces));
+        }
+
+        // moving diagonally bottom left
+        if (isValidMove(sourceX + pieces, sourceY + pieces, sourceX, sourceY, LOA.DIAG2LOA)){
+            nextPossibleMoves.add(new Pair(sourceX + pieces, sourceY - pieces));
+        }
+
+
+    }
+
+    public int getTotalBlackPieces() {
+        return totalBlackPieces;
+    }
+
+    public int getTotalWhitePieces() {
+        return totalWhitePieces;
+    }
+
+    public ArrayList<Pair> getNextPossibleMoves() {
+        return nextPossibleMoves;
     }
 
     public void generateDiagonal1Moves(int sourceX, int sourceY) {
+
+        int pieces = 0;
+
+        int currentX = sourceX;
+        int currentY = sourceY;
+
+        // using this loop to count piece of the top left part including source itself
+        while (currentX >= 0 && currentY >= 0) {
+
+            if (this.currentBoardState[currentX][currentY] != 0) pieces++;
+
+            currentX--;
+            currentY--;
+        }
+
+        currentX = sourceX + 1;
+        currentY = sourceY + 1;
+
+        // using this loop to count piece of the bottom right part including source itself
+        while (currentX < rows && currentY < columns) {
+
+            if (this.currentBoardState[currentX][currentY] != 0) pieces++;
+
+            currentX++;
+            currentY++;
+
+        }
+
+        // moving diagonally up left
+        if (isValidMove(sourceX - pieces, sourceY - pieces, sourceX, sourceY, LOA.DIAG1LOA)){
+            nextPossibleMoves.add(new Pair(sourceX - pieces, sourceY - pieces));
+        }
+
+        // moving diagonally bottom right
+        if (isValidMove(sourceX + pieces, sourceY + pieces, sourceX, sourceY, LOA.DIAG1LOA)){
+            nextPossibleMoves.add(new Pair(sourceX + pieces, sourceY + pieces));
+        }
 
     }
 
