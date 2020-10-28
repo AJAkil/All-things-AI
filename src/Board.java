@@ -29,6 +29,8 @@ public class Board {
             }
             System.out.println();
         }
+
+        System.out.println();
     }
 
     /**
@@ -118,11 +120,11 @@ public class Board {
                 break;
             }
             case DIAG1LOA:{
-                checkDiagonally(LOA.DIAG1LOA, sourceX, sourceY, targetX, sourceColor);
-                break;
+                 if(!checkDiagonally(LOA.DIAG1LOA, sourceX, sourceY, targetX, sourceColor)) return false;
+                 break;
             }
             case DIAG2LOA:{
-                checkDiagonally(LOA.DIAG2LOA, sourceX, sourceY, targetX, sourceColor);
+                if(!checkDiagonally(LOA.DIAG2LOA, sourceX, sourceY, targetX, sourceColor)) return false;
                 break;
             }
 
@@ -134,6 +136,8 @@ public class Board {
 
     public boolean checkDiagonally(
              LOA loa, int sourceX, int sourceY, int targetX, int sourceColor){
+
+        //this.printBoard();
 
         int currentX = -1;
         int currentY = -1;
@@ -150,15 +154,22 @@ public class Board {
         }else if (loa == LOA.DIAG2LOA && targetX > sourceX){
             currentX = sourceX + 1;
             currentY = sourceY - 1;
+            System.out.println(currentX);
+            System.out.println(currentY);
+            System.out.println(targetX);
         }
+
 
         while (currentX != targetX){
 
             int currentColor = this.currentBoardState[currentX][currentY];
+            System.out.println(currentColor);
+            System.out.println(sourceColor);
 
             if (currentColor!=0 && currentColor!=sourceColor){
                 return false;
             }
+
 
             if (loa == LOA.DIAG1LOA && targetX < sourceX){
                 currentX--;
@@ -178,22 +189,72 @@ public class Board {
         return true;
     }
 
-
     public void generateMove(int sourceX, int sourceY){
 
+        this.nextPossibleMoves.clear();
         // generate possible vertical moves
         generateVerticalMoves(sourceX, sourceY);
 
+
         // generate possible horizontal moves
         generateHorizontalMoves(sourceX, sourceY);
+
 
         // generate possible diagonal-1/ left diagonal moves
         generateDiagonal1Moves(sourceX, sourceY);
 
         // generate possible diagonal-2/ right diagonal moves
         generateDiagonal2Moves(sourceX, sourceY);
+        this.showAvailableMoves();
 
         // check for duplicate same moves
+
+    }
+
+
+    public void generateVerticalMoves(int sourceX, int sourceY){
+
+        int pieces = 0;
+
+        // count the number of pieces in the column of the piece in question
+        for (int i = 0; i < rows ; i++) {
+            if (this.currentBoardState[i][sourceY]!=0){
+                pieces++;
+            }
+        }
+
+        // moving downward from source
+        if (isValidMove(sourceX + pieces, sourceY, sourceX, sourceY, LOA.VLOA)){
+            nextPossibleMoves.add(new Pair(sourceX + pieces, sourceY));
+        }
+
+         // moving upward from source
+        if (isValidMove(sourceX - pieces, sourceY, sourceX, sourceY, LOA.VLOA)){
+            nextPossibleMoves.add(new Pair(sourceX - pieces, sourceY));
+        }
+
+    }
+
+    public void generateHorizontalMoves(int sourceX, int sourceY){
+
+        int pieces = 0;
+
+        // count the number of pieces in the column of the piece in question
+        for (int i = 0; i < columns ; i++) {
+            if (this.currentBoardState[sourceX][i]!=0){
+                pieces++;
+            }
+        }
+
+        // moving right from source
+        if (isValidMove(sourceX, sourceY + pieces, sourceX, sourceY, LOA.HLOA)){
+            nextPossibleMoves.add(new Pair(sourceX, sourceY + pieces));
+        }
+
+        // moving left from source
+        if (isValidMove(sourceX, sourceY - pieces, sourceX, sourceY, LOA.HLOA)){
+            nextPossibleMoves.add(new Pair(sourceX, sourceY - pieces));
+        }
 
     }
 
@@ -217,6 +278,7 @@ public class Board {
         currentX = sourceX + 1;
         currentY = sourceY - 1;
 
+
         // using this loop to count piece of the bottom left part including source itself
         while (currentX < rows && currentY >= 0) {
 
@@ -224,31 +286,25 @@ public class Board {
 
             currentX++;
             currentY--;
+
         }
 
+//        System.out.println("wtf");
+//        System.out.println(sourceX - pieces);
+//        System.out.println(sourceY + pieces);
         // moving diagonally up right
         if (isValidMove(sourceX - pieces, sourceY + pieces, sourceX, sourceY, LOA.DIAG2LOA)){
             nextPossibleMoves.add(new Pair(sourceX - pieces, sourceY + pieces));
         }
 
         // moving diagonally bottom left
-        if (isValidMove(sourceX + pieces, sourceY + pieces, sourceX, sourceY, LOA.DIAG2LOA)){
+//        System.out.println("wtf");
+//        System.out.println(sourceX+" "+sourceY);
+        if (isValidMove(sourceX + pieces, sourceY - pieces, sourceX, sourceY, LOA.DIAG2LOA)){
             nextPossibleMoves.add(new Pair(sourceX + pieces, sourceY - pieces));
         }
 
 
-    }
-
-    public int getTotalBlackPieces() {
-        return totalBlackPieces;
-    }
-
-    public int getTotalWhitePieces() {
-        return totalWhitePieces;
-    }
-
-    public ArrayList<Pair> getNextPossibleMoves() {
-        return nextPossibleMoves;
     }
 
     public void generateDiagonal1Moves(int sourceX, int sourceY) {
@@ -292,57 +348,54 @@ public class Board {
 
     }
 
-    public void generateVerticalMoves(int sourceX, int sourceY){
-
-        int pieces = 0;
-
-        // count the number of pieces in the column of the piece in question
-        for (int i = 0; i < rows ; i++) {
-            if (this.currentBoardState[i][sourceY]!=0){
-                pieces++;
-            }
-        }
-
-        // moving downward from source
-        if (isValidMove(sourceX + pieces, sourceY, sourceX, sourceY, LOA.VLOA)){
-            nextPossibleMoves.add(new Pair(sourceX + pieces, sourceY));
-        }
-
-         // moving upward from source
-        if (isValidMove(sourceX - pieces, sourceY, sourceX, sourceY, LOA.VLOA)){
-            nextPossibleMoves.add(new Pair(sourceX + pieces, sourceY));
-        }
-
-    }
-
-    public void generateHorizontalMoves(int sourceX, int sourceY){
-
-        int pieces = 0;
-
-        // count the number of pieces in the column of the piece in question
-        for (int i = 0; i < columns ; i++) {
-            if (this.currentBoardState[sourceX][i]!=0){
-                pieces++;
-            }
-        }
-
-        // moving right from source
-        if (isValidMove(sourceX, sourceY + pieces, sourceX, sourceY, LOA.HLOA)){
-            nextPossibleMoves.add(new Pair(sourceX, sourceY + pieces));
-        }
-
-        // moving left from source
-        if (isValidMove(sourceX, sourceY - pieces, sourceX, sourceY, LOA.HLOA)){
-            nextPossibleMoves.add(new Pair(sourceX, sourceY - pieces));
-        }
-
-    }
-
     public void makeMove(){
+
+    }
+
+    public void showAvailableMoves(){
+        for (Pair move : nextPossibleMoves){
+            System.out.println(move);
+        }
+    }
+
+    public void capturePiece(int color){
+        if ((color == 1)) {
+            this.totalBlackPieces--;
+        } else if(color == 2) {
+            this.totalWhitePieces--;
+        }
+    }
+
+    public void movePiece(Pair source, Pair destination){
+
+        int sourceColor = this.currentBoardState[source.getX()][source.getY()];
+        int destinationColor = this.currentBoardState[source.getX()][source.getY()];
+
+        // moving the source piece and placing it in the destination
+        this.currentBoardState[source.getX()][source.getY()] = 0;
+        this.currentBoardState[destination.getX()][destination.getY()] = sourceColor;
+
+        // if the destination has piece of opposite color, remove it from the board and place this color
+        if (destinationColor != 0 && sourceColor!=destinationColor){
+            // reduce the piece number of destination
+            capturePiece(destinationColor);
+        }
 
     }
 
     public boolean checkGameCompletion(){
         return false;
+    }
+
+    public int getTotalBlackPieces() {
+        return totalBlackPieces;
+    }
+
+    public int getTotalWhitePieces() {
+        return totalWhitePieces;
+    }
+
+    public ArrayList<Pair> getNextPossibleMoves() {
+        return nextPossibleMoves;
     }
 }
