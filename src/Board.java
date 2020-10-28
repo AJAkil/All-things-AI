@@ -9,6 +9,9 @@ public class Board {
     private int totalBlackPieces;
     private int totalWhitePieces;
     private ArrayList<Pair> nextPossibleMoves = new ArrayList<Pair>();
+    private final int BLACK = 2;
+    private final int WHITE = 1;
+    private final int empty = 0;
 
 
     public Board(int rows, int columns) {
@@ -46,11 +49,13 @@ public class Board {
             }
         }
 
+        // filling up the white pieces
         for (int i = 1; i < rows - 1 ; i++) {
             currentBoardState[i][0] = 1;
             currentBoardState[i][columns-1] = 1;
         }
 
+        // filling up the black pieces
         for (int i = 1; i < columns - 1 ; i++) {
             currentBoardState[0][i] = 2;
             currentBoardState[rows-1][i] = 2;
@@ -348,9 +353,6 @@ public class Board {
 
     }
 
-    public void makeMove(){
-
-    }
 
     public void showAvailableMoves(){
         for (Pair move : nextPossibleMoves){
@@ -383,8 +385,73 @@ public class Board {
 
     }
 
-    public boolean checkGameCompletion(){
-        return false;
+    public int[][] getCurrentBoardState() {
+        return currentBoardState;
+    }
+
+    /**
+     * this method returns the player color that wins the match. If there is no winner yet, then it returns 0
+     * @param lastMovingColor to keep track of the color that has made the final move before we call
+     *                    this method
+     * @return the value 0 if no one wins, else return the color value that wins
+     */
+    public int checkGameCompletion(int lastMovingColor){
+
+        int x = -1;
+        int y = -1;
+
+        // first check if there is player of a single color left, if so then that player won
+        if ( this.totalBlackPieces == 1){
+            return BLACK;
+        }else if ( this.totalWhitePieces == 1 ){
+            return WHITE;
+        }
+
+        // find the starting position of the board from where we start checking.
+        // we check for the white pieces first by applying bfs
+        // we check for black pieces next, then we see if we found all the pieces as connected components or not
+        // we first check if both the connected components are equal or not
+        // then we come to the individual case and handle that
+
+        boolean breaker = false;
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < columns; j++) {
+                if (this.currentBoardState[i][j] == WHITE){
+                    x = i;
+                    y = j;
+                    breaker = true;
+                }
+            }
+        }
+
+        GridGraph  g = new GridGraph(this.currentBoardState);
+
+        boolean whiteChecker = g.bfsOnBoard(new Pair(x, y), this.totalWhitePieces);
+
+        g.setVisited();
+        g.cloneBoard(this.currentBoardState);
+
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < columns; j++) {
+                if (this.currentBoardState[i][j] == BLACK){
+                    x = i;
+                    y = j;
+                    break;
+                }
+            }
+        }
+
+        boolean blackChecker = g.bfsOnBoard(new Pair(x, y), this.totalBlackPieces);
+
+        if (whiteChecker && blackChecker){
+            return lastMovingColor;
+        }else if (blackChecker){
+            return BLACK;
+        }else if (whiteChecker){
+            return WHITE;
+        }
+
+        return empty;
     }
 
     public int getTotalBlackPieces() {
