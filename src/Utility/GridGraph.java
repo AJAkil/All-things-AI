@@ -125,9 +125,7 @@ public class GridGraph {
     public void cloneBoard(int[][] board){
 
         for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < columns; j++) {
-                this.operationalBoard[i][j] = board[i][j];
-            }
+            if (columns >= 0) System.arraycopy(board[i], 0, this.operationalBoard[i], 0, columns);
         }
         
     }

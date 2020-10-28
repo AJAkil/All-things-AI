@@ -4,8 +4,8 @@ import Utility.*;
 public class Board {
 
     private int[][] currentBoardState;
-    private int rows;
-    private int columns;
+    private final int rows;
+    private final int columns;
     private int totalBlackPieces;
     private int totalWhitePieces;
     private ArrayList<Pair> nextPossibleMoves = new ArrayList<Pair>();
@@ -45,20 +45,20 @@ public class Board {
 
         for (int i = 0; i < rows ; i++) {
             for (int j = 0; j < columns ; j++) {
-                currentBoardState[i][j] = 0;
+                currentBoardState[i][j] = empty;
             }
         }
 
         // filling up the white pieces
         for (int i = 1; i < rows - 1 ; i++) {
-            currentBoardState[i][0] = 1;
-            currentBoardState[i][columns-1] = 1;
+            currentBoardState[i][0] = WHITE;
+            currentBoardState[i][columns-1] = WHITE;
         }
 
         // filling up the black pieces
         for (int i = 1; i < columns - 1 ; i++) {
-            currentBoardState[0][i] = 2;
-            currentBoardState[rows-1][i] = 2;
+            currentBoardState[0][i] = BLACK;
+            currentBoardState[rows-1][i] = BLACK;
         }
     }
 
@@ -139,8 +139,7 @@ public class Board {
         return true;
     }
 
-    public boolean checkDiagonally(
-             LOA loa, int sourceX, int sourceY, int targetX, int sourceColor){
+    public boolean checkDiagonally(LOA loa, int sourceX, int sourceY, int targetX, int sourceColor){
 
         //this.printBoard();
 
@@ -215,7 +214,6 @@ public class Board {
         // check for duplicate same moves
 
     }
-
 
     public void generateVerticalMoves(int sourceX, int sourceY){
 
@@ -353,7 +351,6 @@ public class Board {
 
     }
 
-
     public void showAvailableMoves(){
         for (Pair move : nextPossibleMoves){
             System.out.println(move);
@@ -397,8 +394,7 @@ public class Board {
      */
     public int checkGameCompletion(int lastMovingColor){
 
-        int x = -1;
-        int y = -1;
+        int x,y;
 
         // first check if there is player of a single color left, if so then that player won
         if ( this.totalBlackPieces == 1){
@@ -407,22 +403,9 @@ public class Board {
             return WHITE;
         }
 
-        // find the starting position of the board from where we start checking.
-        // we check for the white pieces first by applying bfs
-        // we check for black pieces next, then we see if we found all the pieces as connected components or not
-        // we first check if both the connected components are equal or not
-        // then we come to the individual case and handle that
-
-        boolean breaker = false;
-        for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < columns; j++) {
-                if (this.currentBoardState[i][j] == WHITE){
-                    x = i;
-                    y = j;
-                    breaker = true;
-                }
-            }
-        }
+        String[] splitted = getFirstCoordinates(WHITE).split(",");
+        x = Integer.parseInt(splitted[0]);
+        y = Integer.parseInt(splitted[1]);
 
         GridGraph  g = new GridGraph(this.currentBoardState);
 
@@ -431,15 +414,9 @@ public class Board {
         g.setVisited();
         g.cloneBoard(this.currentBoardState);
 
-        for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < columns; j++) {
-                if (this.currentBoardState[i][j] == BLACK){
-                    x = i;
-                    y = j;
-                    break;
-                }
-            }
-        }
+        splitted = getFirstCoordinates(WHITE).split(",");
+        x = Integer.parseInt(splitted[0]);
+        y = Integer.parseInt(splitted[1]);
 
         boolean blackChecker = g.bfsOnBoard(new Pair(x, y), this.totalBlackPieces);
 
@@ -454,6 +431,17 @@ public class Board {
         return empty;
     }
 
+    public String getFirstCoordinates(int pieceColor){
+        for (int i = 0; i < this.rows; i++) {
+            for (int j = 0; j < this.columns; j++) {
+                if (this.currentBoardState[i][j] == pieceColor){
+                    return i + "," + j;
+                }
+            }
+        }
+
+        return "";
+    }
     public int getTotalBlackPieces() {
         return totalBlackPieces;
     }

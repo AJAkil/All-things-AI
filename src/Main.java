@@ -22,7 +22,7 @@ public class Main {
 
         GridGraph g = new GridGraph(grid);
         g.printBoard();
-        g.bfsOnBoard(new Pair(0,7), 12);
+        g.bfsOnBoard(new Pair(6,0), 12);
 
         Scanner scanner = new Scanner(System.in);
 //        board.movePiece(new Pair(0,6), new Pair(2,4));
