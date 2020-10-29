@@ -73,7 +73,7 @@ public class GridGraph {
 
             visited++;
 
-            System.out.println("(" + x + "," + y  + ")");
+            //System.out.println("(" + x + "," + y  + ")");
             //this.printVisited();
 
 
@@ -97,7 +97,7 @@ public class GridGraph {
 
        }
 
-        System.out.println(visited);
+        //System.out.println(visited);
         return visited == totalPieces;
     }
 

@@ -14,6 +14,7 @@ public class Board {
     private final int BLACK = 2;
     private final int WHITE = 1;
     private final int empty = 0;
+    private int turn;
 
 
     public Board(int rows, int columns) {
@@ -362,16 +363,19 @@ public class Board {
 
     public void capturePiece(int color){
         if ((color == 1)) {
-            this.totalBlackPieces--;
-        } else if(color == 2) {
             this.totalWhitePieces--;
+        } else if(color == 2) {
+            this.totalBlackPieces--;
         }
     }
 
     public void movePiece(Pair source, Pair destination){
 
         int sourceColor = this.currentBoardState[source.getX()][source.getY()];
-        int destinationColor = this.currentBoardState[source.getX()][source.getY()];
+        int destinationColor = this.currentBoardState[destination.getX()][destination.getY()];
+
+        System.out.println(sourceColor);
+        System.out.println(destinationColor);
 
         // moving the source piece and placing it in the destination
         this.currentBoardState[source.getX()][source.getY()] = 0;
@@ -380,8 +384,11 @@ public class Board {
         // if the destination has piece of opposite color, remove it from the board and place this color
         if (destinationColor != 0 && sourceColor!=destinationColor){
             // reduce the piece number of destination
+            System.out.println("kire wtf");
             capturePiece(destinationColor);
         }
+
+        System.out.println("ehh");
 
     }
 
@@ -471,5 +478,36 @@ public class Board {
                 this.currentBoardState[i][j] = x;
             }
         }
+    }
+
+    public void revertTurn(){
+        if (turn == WHITE){
+            turn = BLACK;
+        }else {
+            turn = WHITE;
+        }
+    }
+
+    public void undoMove(Pair source, Pair destination, int prevSourceColor, int prevDestinationColor){
+
+        System.out.println("BLACK = " + this.totalBlackPieces);
+        System.out.println("WHITE = " + this.totalWhitePieces);
+
+        this.currentBoardState[source.getX()][source.getY()] = prevSourceColor;
+        this.currentBoardState[destination.getX()][destination.getY()] = prevDestinationColor;
+
+        if (prevDestinationColor == WHITE){
+
+            this.totalWhitePieces++;
+
+        }else if (prevDestinationColor == BLACK){
+
+            this.totalBlackPieces++;
+
+        }
+
+        System.out.println("BLACK = " + this.totalBlackPieces);
+        System.out.println("WHITE = " + this.totalWhitePieces);
+
     }
 }

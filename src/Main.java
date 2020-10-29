@@ -6,8 +6,8 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
         Board board = new Board(8,8);
-        //board.initiateBoard();
-        board.setCustomBoardPiecesForTesting();
+        board.initiateBoard();
+        //board.setCustomBoardPiecesForTesting();
         board.printBoard();
 
 //        int [][] grid = new int[][] {
@@ -61,13 +61,22 @@ public class Main {
             }
 
 
-
             System.out.println("Enter your Destination!");
             int a =  Integer.parseInt(scanner.nextLine());
             int b =  Integer.parseInt(scanner.nextLine());
 
+            int sourceColor = board.getCurrentBoardState()[x][y];
+            int destinationColor = board.getCurrentBoardState()[a][b];
+
             board.movePiece(new Pair(x,y), new Pair(a,b));
             board.printBoard();
+
+            System.out.println("DO you want to undo the move?");
+            if (scanner.nextLine().equalsIgnoreCase("yes")){
+                board.undoMove(new Pair(x,y), new Pair(a,b),sourceColor, destinationColor );
+                board.printBoard();
+            }
+
             int result = board.checkGameCompletion(board.getCurrentBoardState()[x][y]);
 
             if (result == 1){
