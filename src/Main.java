@@ -6,24 +6,25 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
         Board board = new Board(8,8);
-        board.initiateBoard();
+        //board.initiateBoard();
+        board.setCustomBoardPiecesForTesting();
         board.printBoard();
 
-        int [][] grid = new int[][] {
-                {0, 2, 0, 2, 2, 1,0,0},
-                {0, 1, 1, 0, 2, 2,0,0},
-                {0, 1, 2, 0, 2, 2,0,0},
-                {0, 1, 1, 2, 0, 1,2,0},
-                {0, 1, 2, 0, 2, 2,0,2},
-                {0, 2, 1, 0, 2, 1,0,1},
-                {2, 1, 1, 1, 2, 2,1,0},
-                {0, 1, 1, 0, 1, 2,0,1},
-        };
-
-        GridGraph g = new GridGraph(grid);
-        g.printBoard();
-        g.bfsOnBoard(new Pair(6,0), 12);
-
+//        int [][] grid = new int[][] {
+//                {0, 2, 0, 2, 2, 1,0,0},
+//                {0, 1, 1, 0, 2, 2,0,0},
+//                {0, 1, 2, 0, 2, 2,0,0},
+//                {0, 1, 1, 2, 0, 1,2,0},
+//                {0, 1, 2, 0, 2, 2,0,2},
+//                {0, 2, 1, 0, 2, 1,0,1},
+//                {2, 1, 1, 1, 2, 2,1,0},
+//                {0, 1, 1, 0, 1, 2,0,1},
+//        };
+//
+        //GridGraph g = new GridGraph(board.getCurrentBoardState());
+        //g.printBoard();
+        //g.bfsOnBoard(new Pair(6,0), 12);
+//
         Scanner scanner = new Scanner(System.in);
 //        board.movePiece(new Pair(0,6), new Pair(2,4));
 //        board.movePiece(new Pair(7,6), new Pair(5,4));
@@ -43,10 +44,22 @@ public class Main {
 //        board.printBoard();
 
         while (true){
-            System.out.println("Enter your Source!");
-            int x =  Integer.parseInt(scanner.nextLine());
-            int y =  Integer.parseInt(scanner.nextLine());
-            board.generateMove(x,y);
+            int x,y;
+
+            while (true){
+                System.out.println("Enter your Source!");
+                x =  Integer.parseInt(scanner.nextLine());
+                y =  Integer.parseInt(scanner.nextLine());
+                if (board.getCurrentBoardState()[x][y] == 0){
+                    System.out.println("No piece here! Try again");
+                    continue;
+                }
+                board.generateMove(x,y);
+                System.out.println("Do you want to give a move?");
+                String choice = scanner.nextLine();
+                if (choice.equalsIgnoreCase("yes")) break;
+            }
+
 
 
             System.out.println("Enter your Destination!");
@@ -55,7 +68,15 @@ public class Main {
 
             board.movePiece(new Pair(x,y), new Pair(a,b));
             board.printBoard();
+            int result = board.checkGameCompletion(board.getCurrentBoardState()[x][y]);
 
+            if (result == 1){
+                System.out.println("WHITE WINS");
+            }else if(result == 2){
+                System.out.println("BLACK WINS");
+            }else if(result == 0){
+                System.out.println("GO ON!!");
+            }
 
         }
 

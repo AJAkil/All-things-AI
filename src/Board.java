@@ -1,4 +1,6 @@
 import java.util.ArrayList;
+import java.util.Scanner;
+
 import Utility.*;
 
 public class Board {
@@ -17,8 +19,8 @@ public class Board {
     public Board(int rows, int columns) {
         this.rows = rows;
         this.columns = columns;
-        this.totalBlackPieces = rows - 2;
-        this.totalWhitePieces = rows - 2;
+        this.totalBlackPieces = (rows - 2)*2;
+        this.totalWhitePieces = (rows - 2)*2;
         initiateBoard();
     }
 
@@ -61,7 +63,6 @@ public class Board {
             currentBoardState[rows-1][i] = BLACK;
         }
     }
-
 
     public boolean isValidMove(int targetX, int targetY, int sourceX, int sourceY, LOA loa){
 
@@ -158,17 +159,17 @@ public class Board {
         }else if (loa == LOA.DIAG2LOA && targetX > sourceX){
             currentX = sourceX + 1;
             currentY = sourceY - 1;
-            System.out.println(currentX);
-            System.out.println(currentY);
-            System.out.println(targetX);
+//            System.out.println(currentX);
+//            System.out.println(currentY);
+//            System.out.println(targetX);
         }
 
 
         while (currentX != targetX){
 
             int currentColor = this.currentBoardState[currentX][currentY];
-            System.out.println(currentColor);
-            System.out.println(sourceColor);
+//            System.out.println(currentColor);
+//            System.out.println(sourceColor);
 
             if (currentColor!=0 && currentColor!=sourceColor){
                 return false;
@@ -248,6 +249,8 @@ public class Board {
                 pieces++;
             }
         }
+
+        //System.out.println(pieces);
 
         // moving right from source
         if (isValidMove(sourceX, sourceY + pieces, sourceX, sourceY, LOA.HLOA)){
@@ -414,11 +417,14 @@ public class Board {
         g.setVisited();
         g.cloneBoard(this.currentBoardState);
 
-        splitted = getFirstCoordinates(WHITE).split(",");
+        splitted = getFirstCoordinates(BLACK).split(",");
         x = Integer.parseInt(splitted[0]);
         y = Integer.parseInt(splitted[1]);
 
+        //System.out.println("("+x+","+y+") first black piece found");
+
         boolean blackChecker = g.bfsOnBoard(new Pair(x, y), this.totalBlackPieces);
+        //System.out.println(blackChecker);
 
         if (whiteChecker && blackChecker){
             return lastMovingColor;
@@ -442,6 +448,7 @@ public class Board {
 
         return "";
     }
+
     public int getTotalBlackPieces() {
         return totalBlackPieces;
     }
@@ -452,5 +459,17 @@ public class Board {
 
     public ArrayList<Pair> getNextPossibleMoves() {
         return nextPossibleMoves;
+    }
+
+    public void setCustomBoardPiecesForTesting(){
+        Scanner scan = new Scanner(System.in);
+        int x;
+
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < columns; j++) {
+                x = Integer.parseInt(scan.nextLine());
+                this.currentBoardState[i][j] = x;
+            }
+        }
     }
 }

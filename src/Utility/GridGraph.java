@@ -49,6 +49,7 @@ public class GridGraph {
 
     public boolean bfsOnBoard(Pair startingCoordinates, int totalPieces){
 
+
         int x = -1;
         int y = -1;
         int color = this.operationalBoard[startingCoordinates.getX()][startingCoordinates.getY()];
