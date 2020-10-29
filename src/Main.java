@@ -1,6 +1,8 @@
 import Utility.GridGraph;
 import Utility.Pair;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Scanner;
 
 public class Main {
@@ -9,6 +11,7 @@ public class Main {
         board.initiateBoard();
         //board.setCustomBoardPiecesForTesting();
         board.printBoard();
+        //HashMap<Pair, ArrayList<Pair>> generateAllMove = board.generateAllMove(1);
 
 //        int [][] grid = new int[][] {
 //                {0, 2, 0, 2, 2, 1,0,0},

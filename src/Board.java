@@ -1,4 +1,6 @@
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 import Utility.*;
@@ -211,7 +213,7 @@ public class Board {
 
         // generate possible diagonal-2/ right diagonal moves
         generateDiagonal2Moves(sourceX, sourceY);
-        this.showAvailableMoves();
+        //this.showAvailableMoves();
 
         // check for duplicate same moves
 
@@ -374,8 +376,8 @@ public class Board {
         int sourceColor = this.currentBoardState[source.getX()][source.getY()];
         int destinationColor = this.currentBoardState[destination.getX()][destination.getY()];
 
-        System.out.println(sourceColor);
-        System.out.println(destinationColor);
+//        System.out.println(sourceColor);
+//        System.out.println(destinationColor);
 
         // moving the source piece and placing it in the destination
         this.currentBoardState[source.getX()][source.getY()] = 0;
@@ -384,11 +386,11 @@ public class Board {
         // if the destination has piece of opposite color, remove it from the board and place this color
         if (destinationColor != 0 && sourceColor!=destinationColor){
             // reduce the piece number of destination
-            System.out.println("kire wtf");
+            //System.out.println("kire wtf");
             capturePiece(destinationColor);
         }
 
-        System.out.println("ehh");
+        //System.out.println("ehh");
 
     }
 
@@ -510,4 +512,29 @@ public class Board {
         System.out.println("WHITE = " + this.totalWhitePieces);
 
     }
+
+    public HashMap<Pair, ArrayList<Pair>> generateAllMove(int color){
+
+        HashMap<Pair, ArrayList<Pair>> moveMap = new HashMap<Pair, ArrayList<Pair>>();
+
+        for (int i = 0; i < this.rows; i++) {
+            for (int j = 0; j < this.columns; j++) {
+                if (this.currentBoardState[i][j] == color){
+                    Pair source = new Pair(i,j);
+                    this.generateMove(i,j);
+                    moveMap.put(source,this.nextPossibleMoves);
+                }
+            }
+        }
+
+//        for (Map.Entry<Pair, ArrayList<Pair>> entry: moveMap.entrySet()){
+//            System.out.println("Key = " + entry.getKey() +
+//                    ", Value = " + entry.getValue());
+//        }
+
+        return moveMap;
+
+    }
+
+
 }
