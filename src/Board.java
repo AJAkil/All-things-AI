@@ -18,6 +18,13 @@ public class Board {
     private final int empty = 0;
     private int turn;
 
+    public void setTurn(int turn) {
+        this.turn = turn;
+    }
+
+    public int getTurn() {
+        return turn;
+    }
 
     public Board(int rows, int columns) {
         this.rows = rows;
@@ -213,7 +220,7 @@ public class Board {
 
         // generate possible diagonal-2/ right diagonal moves
         generateDiagonal2Moves(sourceX, sourceY);
-        //this.showAvailableMoves();
+        this.showAvailableMoves();
 
         // check for duplicate same moves
 
@@ -535,6 +542,5 @@ public class Board {
         return moveMap;
 
     }
-
 
 }
