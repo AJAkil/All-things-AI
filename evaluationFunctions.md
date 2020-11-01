@@ -3,13 +3,13 @@
 pieceSquareTable[ ] =
  {
 
--80, -25, -20, -20, -20, -20, -25, -80,
--25,  10,  10,  10,  10,  10,  10,  -25,
--20,  10,  25,  25,  25,  25,  10,  -20,
--20,  10,  25,  50,  50,  25,  10,  -20,
--20,  10,  25,  50,  50,  25,  10,  -20,
--20,  10,  25,  25,  25,  25,  10,  -20,
--25,  10,  10,  10,  10,  10,  10,  -25,
+-80, -25, -20, -20, -20, -20, -25, -80,\
+-25,  10,  10,  10,  10,  10,  10,  -25,\
+-20,  10,  25,  25,  25,  25,  10,  -20,\
+-20,  10,  25,  50,  50,  25,  10,  -20,\
+-20,  10,  25,  50,  50,  25,  10,  -20,\
+-20,  10,  25,  25,  25,  25,  10,  -20,\
+-25,  10,  10,  10,  10,  10,  10,  -25,\
 -80, -25, -20, -20, -20, -20, -25, -80
 
 };
@@ -21,10 +21,10 @@ which features or patterns are important?
 
 * piece square table
 * area
-*mobility
-*connectedness
-*quad
-*density
+* mobility
+* connectedness
+* quad
+* density
 
 piece square table
 a simple way to assign values to specific pieces on specific squares. Easy and fast to evaluate. Possible to experiment by using different tables which are created by changing the weight values.

@@ -407,6 +407,18 @@ public class Board {
         return currentBoardState;
     }
 
+    public int getBLACK() {
+        return BLACK;
+    }
+
+    public int getWHITE() {
+        return WHITE;
+    }
+
+    public int getEmpty() {
+        return empty;
+    }
+
     /**
      * this method returns the player color that wins the match. If there is no winner yet, then it returns 0
      * @param lastMovingColor to keep track of the color that has made the final move before we call
@@ -473,6 +485,14 @@ public class Board {
 
     public int getTotalWhitePieces() {
         return totalWhitePieces;
+    }
+
+    public int getRows() {
+        return rows;
+    }
+
+    public int getColumns() {
+        return columns;
     }
 
     public ArrayList<Pair> getNextPossibleMoves() {
