@@ -521,8 +521,8 @@ public class Board {
 
     public void undoMove(Pair source, Pair destination, int prevSourceColor, int prevDestinationColor){
 
-        System.out.println("BLACK = " + this.totalBlackPieces);
-        System.out.println("WHITE = " + this.totalWhitePieces);
+//        System.out.println("BLACK = " + this.totalBlackPieces);
+//        System.out.println("WHITE = " + this.totalWhitePieces);
 
         this.currentBoardState[source.getX()][source.getY()] = prevSourceColor;
         this.currentBoardState[destination.getX()][destination.getY()] = prevDestinationColor;
@@ -537,8 +537,8 @@ public class Board {
 
         }
 
-        System.out.println("BLACK = " + this.totalBlackPieces);
-        System.out.println("WHITE = " + this.totalWhitePieces);
+//        System.out.println("BLACK = " + this.totalBlackPieces);
+//        System.out.println("WHITE = " + this.totalWhitePieces);
 
     }
 
@@ -551,15 +551,17 @@ public class Board {
                 if (this.currentBoardState[i][j] == color){
                     Pair source = new Pair(i,j);
                     this.generateMove(i,j);
-                    moveMap.put(source,this.nextPossibleMoves);
+                    ArrayList<Pair> generatedMoves = new ArrayList<Pair>();
+                    generatedMoves.addAll(this.nextPossibleMoves);
+                    moveMap.put(source,generatedMoves);
                 }
             }
         }
 
-//        for (Map.Entry<Pair, ArrayList<Pair>> entry: moveMap.entrySet()){
-//            System.out.println("Key = " + entry.getKey() +
-//                    ", Value = " + entry.getValue());
-//        }
+/*        for (Map.Entry<Pair, ArrayList<Pair>> entry: moveMap.entrySet()){
+            System.out.println("Key = " + entry.getKey() +
+                    ", Value = " + entry.getValue());
+        }*/
 
         return moveMap;
 

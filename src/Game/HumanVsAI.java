@@ -21,7 +21,7 @@ public class HumanVsAI extends GamePlay {
 
         AdversarialSearch searchAgent = new AdversarialSearch(board, 2, 4);
 
-        searchAgent.minimaxDecision();
+        System.out.println("THE MOVE IS : " + searchAgent.minimaxDecision());
 
     }
 }
