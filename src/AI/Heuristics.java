@@ -2,11 +2,11 @@ package AI;
 import Game.*;
 import Utility.*;
 
-public class Heuristics {
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
-    public static double heuristic1(Board currentBoard, int depth){
-        return 1.0;
-    }
+public class Heuristics {
 
     public static double pieceSquareTable(Board currentBoard,  int AIColor){
 
@@ -61,64 +61,41 @@ public class Heuristics {
     public static double areaHeuristic(Board currentBoard,  int AIColor){
 
         int[][] currentBoardState = currentBoard.getCurrentBoardState();
+        Utility utility = new Utility();
 
         // calculating area for black
-        double blackArea = findArea(currentBoardState, currentBoard.getBLACK(), currentBoard.getRows(), currentBoard.getColumns());
+        double blackArea = utility.findArea(currentBoardState, currentBoard.getBLACK(), currentBoard.getRows(), currentBoard.getColumns());
 
         // then we calculate the area for black piece
-        double WhiteArea = findArea(currentBoardState, currentBoard.getWHITE(), currentBoard.getRows(), currentBoard.getColumns());
+        double WhiteArea = utility.findArea(currentBoardState, currentBoard.getWHITE(), currentBoard.getRows(), currentBoard.getColumns());
 
         return (AIColor == currentBoard.getBLACK() ? WhiteArea - blackArea : blackArea - WhiteArea);
     }
 
-    public static double findArea(int[][] board, int color, int rows, int columns){
-        int minColumn = 0, maxColumn = 0, minRow = 0, maxRow = 0;
+    public static double mobilityHeuristic(Board currentBoard, int AIColor){
 
-        // find the minColumn
-        for (int i = 0; i< columns; i++){
-            for (int j = 0; j < rows; j++) {
-                if (board[j][i] == color){
-                    minColumn = i;
-                    break;
-                }
-            }
-        }
+        double blackMoves = 0, whiteMoves = 0;
+        Utility utility = new Utility();
 
-        // find the maxColumn
-        for (int i = columns - 1; i>=0; i--){
-            for (int j = 0; j < rows; j++) {
-                if (board[j][i] == color){
-                    maxColumn = i;
-                    break;
-                }
-            }
-        }
+        blackMoves = utility.getTotalNumberOfMoves(currentBoard, currentBoard.getBLACK());
+        whiteMoves = utility.getTotalNumberOfMoves(currentBoard, currentBoard.getWHITE());
 
-        // find the minRow
-        for (int i = 0; i< rows; i++){
-            for (int j = 0; j < columns; j++) {
-                if (board[i][j] == color){
-                    minRow= i;
-                    break;
-                }
-            }
-        }
+//        System.out.println(blackMoves);
+//        System.out.println(whiteMoves);
 
-        //maxRow
-        for (int i = rows - 1; i>=0; i--){
-            for (int j = 0; j < columns; j++) {
-                if (board[i][j] == color){
-                    maxRow = i;
-                    break;
-                }
-            }
-        }
+        return (AIColor == currentBoard.getBLACK() ? blackMoves - whiteMoves : whiteMoves - blackMoves);
 
-        double width = Math.abs(minColumn - maxColumn);
-        double height = Math.abs(minRow - maxRow);
-
-        return width * height;
     }
 
+    public static double finalEvaluator(Board currentBoard, int AIColor){
+
+        double w1 = 1.0;
+        double w2 = 1.0;
+        double w3 = 1.0;
+
+        return (w1 * pieceSquareTable(currentBoard, AIColor)) + (w2 * areaHeuristic(currentBoard, AIColor)) +
+                (w3 * mobilityHeuristic(currentBoard, AIColor));
+
+    }
 
 }

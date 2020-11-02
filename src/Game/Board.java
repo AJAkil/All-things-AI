@@ -222,7 +222,7 @@ public class Board {
 
         // generate possible diagonal-2/ right diagonal moves
         generateDiagonal2Moves(sourceX, sourceY);
-        this.showAvailableMoves();
+        //this.showAvailableMoves();
 
         // check for duplicate same moves
 
@@ -573,7 +573,7 @@ public class Board {
 /*        for (Map.Entry<Pair, ArrayList<Pair>> entry: moveMap.entrySet()){
             System.out.println("Key = " + entry.getKey() +
                     ", Value = " + entry.getValue());
-        }*/
+}*/
 
         return moveMap;
 
