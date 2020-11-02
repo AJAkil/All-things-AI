@@ -36,10 +36,10 @@ public class AdversarialSearch {
         double alpha = Double.NEGATIVE_INFINITY;
         double beta = Double.POSITIVE_INFINITY;
 
-        for (Map.Entry<Pair, ArrayList<Pair>> entry: AllMoves.entrySet()){
-            System.out.println("Source = " + entry.getKey() +
-                    ", Moves = " + entry.getValue());
-        }
+//        for (Map.Entry<Pair, ArrayList<Pair>> entry: AllMoves.entrySet()){
+//            System.out.println("Source = " + entry.getKey() +
+//                    ", Moves = " + entry.getValue());
+//        }
 
         for (Map.Entry<Pair, ArrayList<Pair>> entry: AllMoves.entrySet()){
 
@@ -47,8 +47,8 @@ public class AdversarialSearch {
             Pair sourceCoordinate = entry.getKey();
             ArrayList<Pair> possibleMoves= entry.getValue();
 
-            System.out.println("SOURCE = "+sourceCoordinate);
-            System.out.println("DESTINATIONs = "+possibleMoves);
+//            System.out.println("SOURCE = "+sourceCoordinate);
+//            System.out.println("DESTINATIONs = "+possibleMoves);
 
             for (int i = 0; i < possibleMoves.size(); i++) {
                 Pair destinationCoordinate = possibleMoves.get(i);
@@ -64,7 +64,7 @@ public class AdversarialSearch {
 
                 // we call the minValue method next
                 value = minValue(this.depth - 1, alpha, beta, this.agentColor);
-                System.out.println("VALUE" + value);
+                //System.out.println("VALUE" + value);
                 // we then undo the move for the next iteration
                 this.board.undoMove(sourceCoordinate, destinationCoordinate, sourceColor, destinationColor);
 

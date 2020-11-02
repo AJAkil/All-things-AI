@@ -479,6 +479,18 @@ public class Board {
         return "";
     }
 
+    public String getLastCoordinates(int pieceColor){
+        for (int i = this.rows - 1; i>=0; i--) {
+            for (int j = this.rows; j >= 0; j--) {
+                if (this.currentBoardState[i][j] == pieceColor){
+                    return i + "," + j;
+                }
+            }
+        }
+
+        return "";
+    }
+
     public int getTotalBlackPieces() {
         return totalBlackPieces;
     }
