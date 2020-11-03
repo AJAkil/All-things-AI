@@ -13,7 +13,7 @@ public abstract class GamePlay {
     }
 
     public void revertTurn(){
-        System.out.println("here");
+        //System.out.println("here");
         if (turn == 1){
             turn = 2;
         }else {

@@ -89,6 +89,8 @@ public class HumanVsHuman extends GamePlay {
                     continue;
                 }
                 board.generateMove(x,y);
+                System.out.println(board.getNextPossibleMoves());
+                board.printBoard();
                 System.out.println("Do you want to give a move?");
                 String choice = scanner.nextLine();
                 if (choice.equalsIgnoreCase("yes")) break;
@@ -115,8 +117,10 @@ public class HumanVsHuman extends GamePlay {
 
             if (result == 1){
                 System.out.println("WHITE WINS");
+                break;
             }else if(result == 2){
                 System.out.println("BLACK WINS");
+                break;
             }else if(result == 0){
                 System.out.println("GO ON!!");
             }

@@ -26,6 +26,9 @@ public class AdversarialSearch {
 
     public String minimaxDecision(){
 
+        System.out.println("Here in the AI ");
+        this.board.printBoard();
+
         // for the current state of the board and the current color of the agent, get all the possible moves
         HashMap<Pair, ArrayList<Pair>> AllMoves = this.board.generateAllMove(this.agentColor);
         int sourceColor, destinationColor;
@@ -94,7 +97,8 @@ public class AdversarialSearch {
         }
 
         if (depth == 0){
-            return Heuristics.pieceSquareTable(this.board, this.agentColor);
+            //return Heuristics.pieceSquareTable(this.board, this.agentColor);
+            return Heuristics.finalEvaluator(this.board, this.agentColor);
         }
 
         // if that's not the case, then we need have some work to do. First we alternate the color of the piece to move
@@ -155,7 +159,8 @@ public class AdversarialSearch {
         }
 
         if (depth == 0){
-            return Heuristics.pieceSquareTable(this.board, this.agentColor);
+            //return Heuristics.pieceSquareTable(this.board, this.agentColor);
+            return Heuristics.finalEvaluator(this.board, this.agentColor);
         }
 
         // if that's not the case, then we need have some work to do. First we alternate the color of the piece to move
