@@ -94,9 +94,7 @@ public class HumanVsAI extends GamePlay {
                         new Pair(Integer.parseInt(destinations[0]), Integer.parseInt(destinations[1])));
                 board.printBoard();
 
-
             }
-
 
             int result = board.checkGameCompletion(turnColor);
 

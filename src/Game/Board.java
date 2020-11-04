@@ -40,7 +40,15 @@ public class Board {
      * prints the board to the console
      */
     public void printBoard(){
+
+        System.out.print("    ");
+        for (int i = 0; i < this.columns ; i++) {
+            System.out.print(i+ "   ");
+        }
+        System.out.println();
+
         for (int i = 0; i < rows ; i++) {
+            System.out.print(i + "   ");
             for (int j = 0; j < columns ; j++) {
                 System.out.print(Utility.prettifyBoard(currentBoardState[i][j]) + "   ");
             }
