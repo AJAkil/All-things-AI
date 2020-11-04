@@ -43,12 +43,12 @@ public class Board {
 
         System.out.print("    ");
         for (int i = 0; i < this.columns ; i++) {
-            System.out.print(i+ "   ");
+            System.out.print(i+1+ "   ");
         }
         System.out.println();
 
         for (int i = 0; i < rows ; i++) {
-            System.out.print(i + "   ");
+            System.out.print(i+1 + "   ");
             for (int j = 0; j < columns ; j++) {
                 System.out.print(Utility.prettifyBoard(currentBoardState[i][j]) + "   ");
             }

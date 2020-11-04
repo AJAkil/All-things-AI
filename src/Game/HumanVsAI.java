@@ -57,8 +57,8 @@ public class HumanVsAI extends GamePlay {
 
                 while (true){
                     System.out.println("Enter your Source!");
-                    x =  Integer.parseInt(scanner.nextLine());
-                    y =  Integer.parseInt(scanner.nextLine());
+                    x =  Integer.parseInt(scanner.nextLine()) - 1;
+                    y =  Integer.parseInt(scanner.nextLine()) - 1;
                     if (board.getCurrentBoardState()[x][y] == 0 || board.getCurrentBoardState()[x][y] != turnColor){
                         System.out.println("No piece here or no piece of your color!! Try again");
                         continue;
@@ -66,7 +66,7 @@ public class HumanVsAI extends GamePlay {
                     board.generateMove(x,y);
 
                     System.out.println("Your Moves Are: ");
-                    System.out.println(board.getNextPossibleMoves());
+                    board.showAvailableMoves();
                     board.printBoard();
 
                     System.out.println("Do you want to give a move?");
@@ -75,8 +75,8 @@ public class HumanVsAI extends GamePlay {
                 }
 
                 System.out.println("Enter your Destination!");
-                int a =  Integer.parseInt(scanner.nextLine());
-                int b =  Integer.parseInt(scanner.nextLine());
+                int a =  Integer.parseInt(scanner.nextLine()) - 1;
+                int b =  Integer.parseInt(scanner.nextLine()) - 1;
 
                 board.movePiece(new Pair(x,y), new Pair(a,b));
                 board.printBoard();
@@ -88,7 +88,12 @@ public class HumanVsAI extends GamePlay {
                 String[] sources = moves[0].split(",");
                 String[] destinations = moves[1].split(",");
 
-                System.out.println("AI has moved from "+ Arrays.toString(sources) +" to " + Arrays.toString(destinations));
+                int aiSourceX = Integer.parseInt(sources[0])+1;
+                int aiSourceY = Integer.parseInt(sources[1])+1;
+                int aiDestX = Integer.parseInt(destinations[0])+1;
+                int aiDestY = Integer.parseInt(destinations[1])+1;
+
+                System.out.println("AI has moved from "+ "[ " +aiSourceX + "," + aiSourceY + " ]" +" to " + "[ " +aiDestX + "," + aiDestY + " ]\n");
 //                System.out.println(Arrays.toString(sources));
 //                System.out.println(Arrays.toString(destinations));
                 

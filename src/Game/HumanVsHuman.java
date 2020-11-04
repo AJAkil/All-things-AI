@@ -82,8 +82,8 @@ public class HumanVsHuman extends GamePlay {
 
             while (true){
                 System.out.println("Enter your Source!");
-                x =  Integer.parseInt(scanner.nextLine());
-                y =  Integer.parseInt(scanner.nextLine());
+                x =  Integer.parseInt(scanner.nextLine()) - 1;
+                y =  Integer.parseInt(scanner.nextLine()) - 1;
                 if (board.getCurrentBoardState()[x][y] == 0 || board.getCurrentBoardState()[x][y] != turnColor){
                     System.out.println("No piece here or no piece of your color!! Try again");
                     continue;
@@ -91,7 +91,7 @@ public class HumanVsHuman extends GamePlay {
                 board.generateMove(x,y);
 
                 System.out.println("Your Moves Are: ");
-                System.out.println(board.getNextPossibleMoves());
+                board.showAvailableMoves();
                 board.printBoard();
 
                 System.out.println("Do you want to give a move?");
@@ -101,8 +101,8 @@ public class HumanVsHuman extends GamePlay {
 
 
             System.out.println("Enter your Destination!");
-            int a =  Integer.parseInt(scanner.nextLine());
-            int b =  Integer.parseInt(scanner.nextLine());
+            int a =  Integer.parseInt(scanner.nextLine()) - 1;
+            int b =  Integer.parseInt(scanner.nextLine()) - 1;
 
             board.movePiece(new Pair(x,y), new Pair(a,b));
             board.printBoard();

@@ -31,8 +31,11 @@ public class Pair {
 
     @Override
     public String toString() {
-        return "x = " + x +
-                ", y = " + y;
+
+        int a = x + 1;
+        int b = y + 1;
+        return "x = " + a +
+                ", y = " + b;
     }
 
     @Override
