@@ -75,7 +75,7 @@ public class HumanVsHuman extends GamePlay {
                 turnColor = player1Color;
             }
             else{
-                System.out.printf("Player 2's turn");
+                System.out.println("Player 2's turn");
                 turnColor = player2Color;
             }
 
@@ -89,8 +89,11 @@ public class HumanVsHuman extends GamePlay {
                     continue;
                 }
                 board.generateMove(x,y);
+
+                System.out.println("Your Moves Are: ");
                 System.out.println(board.getNextPossibleMoves());
                 board.printBoard();
+
                 System.out.println("Do you want to give a move?");
                 String choice = scanner.nextLine();
                 if (choice.equalsIgnoreCase("yes")) break;
@@ -101,17 +104,8 @@ public class HumanVsHuman extends GamePlay {
             int a =  Integer.parseInt(scanner.nextLine());
             int b =  Integer.parseInt(scanner.nextLine());
 
-            int sourceColor = board.getCurrentBoardState()[x][y];
-            int destinationColor = board.getCurrentBoardState()[a][b];
-
             board.movePiece(new Pair(x,y), new Pair(a,b));
             board.printBoard();
-
-            System.out.println("DO you want to undo the move?");
-            if (scanner.nextLine().equalsIgnoreCase("yes")){
-                board.undoMove(new Pair(x,y), new Pair(a,b),sourceColor, destinationColor );
-                board.printBoard();
-            }
 
             int result = board.checkGameCompletion(board.getCurrentBoardState()[x][y]);
 
@@ -121,8 +115,6 @@ public class HumanVsHuman extends GamePlay {
             }else if(result == 2){
                 System.out.println("BLACK WINS");
                 break;
-            }else if(result == 0){
-                System.out.println("GO ON!!");
             }
 
             this.revertTurn();

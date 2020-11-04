@@ -37,7 +37,7 @@ public class HumanVsAI extends GamePlay {
         System.out.println("Human is set to " + color1  + " AI is set to " + color2 + " ");
 
         this.setTurn(player1Color);
-        AdversarialSearch searchAgent = new AdversarialSearch(board, agentColor, 4);
+        AdversarialSearch searchAgent = new AdversarialSearch(board, agentColor, 10);
 
         while (true){
 
@@ -64,8 +64,11 @@ public class HumanVsAI extends GamePlay {
                         continue;
                     }
                     board.generateMove(x,y);
+
+                    System.out.println("Your Moves Are: ");
                     System.out.println(board.getNextPossibleMoves());
                     board.printBoard();
+
                     System.out.println("Do you want to give a move?");
                     String choice = scanner.nextLine();
                     if (choice.equalsIgnoreCase("yes")) break;
@@ -74,9 +77,6 @@ public class HumanVsAI extends GamePlay {
                 System.out.println("Enter your Destination!");
                 int a =  Integer.parseInt(scanner.nextLine());
                 int b =  Integer.parseInt(scanner.nextLine());
-
-                int sourceColor = board.getCurrentBoardState()[x][y];
-                int destinationColor = board.getCurrentBoardState()[a][b];
 
                 board.movePiece(new Pair(x,y), new Pair(a,b));
                 board.printBoard();
@@ -87,6 +87,8 @@ public class HumanVsAI extends GamePlay {
                 String[] moves= searchAgent.minimaxDecision().split("#");
                 String[] sources = moves[0].split(",");
                 String[] destinations = moves[1].split(",");
+
+                System.out.println("AI has moved from "+ Arrays.toString(sources) +" to " + Arrays.toString(destinations));
 //                System.out.println(Arrays.toString(sources));
 //                System.out.println(Arrays.toString(destinations));
                 

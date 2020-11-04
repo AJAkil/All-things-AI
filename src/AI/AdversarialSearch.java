@@ -13,11 +13,14 @@ public class AdversarialSearch {
     private int depth;
     private final int MAX_VALUE = 100000;
     private final int MIN_VALUE = -100000;
+    long startTime, endTime;
+    long boundTime;
 
     public AdversarialSearch(Board board, int agentColor, int depth) {
         this.board = board;
         this.agentColor = agentColor;
         this.depth = depth;
+        this.boundTime = (board.getRows() == 6) ? 1 : 2;
     }
 
     public int switchColor(int color){
@@ -26,63 +29,118 @@ public class AdversarialSearch {
 
     public String minimaxDecision(){
 
-        System.out.println("Here in the AI ");
-        this.board.printBoard();
+        //this.board.printBoard();
 
         // for the current state of the board and the current color of the agent, get all the possible moves
         HashMap<Pair, ArrayList<Pair>> AllMoves = this.board.generateAllMove(this.agentColor);
         int sourceColor, destinationColor;
-        int c = 0;
         double value;
         double resultValue = Double.NEGATIVE_INFINITY;
         String move = "";
+        String bestMove = "";
         double alpha = Double.NEGATIVE_INFINITY;
         double beta = Double.POSITIVE_INFINITY;
+        boolean timeBreaker = false;
 
-//        for (Map.Entry<Pair, ArrayList<Pair>> entry: AllMoves.entrySet()){
-//            System.out.println("Source = " + entry.getKey() +
-//                    ", Moves = " + entry.getValue());
-//        }
+        // getting the start time here
+        this.startTime = System.nanoTime();
 
-        for (Map.Entry<Pair, ArrayList<Pair>> entry: AllMoves.entrySet()){
+        for (int d = 1; d <= depth; d++) {
 
-            // we take all the moves possible from a given source coordinate
-            Pair sourceCoordinate = entry.getKey();
-            ArrayList<Pair> possibleMoves= entry.getValue();
-
-//            System.out.println("SOURCE = "+sourceCoordinate);
-//            System.out.println("DESTINATIONs = "+possibleMoves);
-
-            for (int i = 0; i < possibleMoves.size(); i++) {
-                Pair destinationCoordinate = possibleMoves.get(i);
-
-                //System.out.println(destinationCoordinate);
-
-                // saving the source and destination color for undoing the move
-                sourceColor = board.getCurrentBoardState()[sourceCoordinate.getX()][sourceCoordinate.getY()];
-                destinationColor = board.getCurrentBoardState()[destinationCoordinate.getX()][destinationCoordinate.getY()];
-
-                // we perform the move
-                this.board.movePiece(sourceCoordinate, destinationCoordinate);
-
-                // we call the minValue method next
-                value = minValue(this.depth - 1, alpha, beta, this.agentColor);
-                //System.out.println("VALUE" + value);
-                // we then undo the move for the next iteration
-                this.board.undoMove(sourceCoordinate, destinationCoordinate, sourceColor, destinationColor);
-
-                if (value > resultValue) {
-                    resultValue = value;
-                    move = sourceCoordinate.getX() + "," + sourceCoordinate.getY() + "#" + destinationCoordinate.getX() +
-                            "," + destinationCoordinate.getY();
-                }
-
-                alpha = Math.max(alpha, value);
+            if (timeBreaker) {
+                break;
             }
 
+            for (Map.Entry<Pair, ArrayList<Pair>> entry: AllMoves.entrySet()){
+
+                if (timeBreaker) {
+                    break;
+                }
+
+                // we take all the moves possible from a given source coordinate
+                Pair sourceCoordinate = entry.getKey();
+                ArrayList<Pair> possibleMoves= entry.getValue();
+
+                for (int i = 0; i < possibleMoves.size(); i++) {
+
+                    // first we check the elapsed time here
+                    this.endTime = System.nanoTime();
+                    double elapsedTimeInSecond = (double) (endTime-startTime) / 1_000_000_000;
+
+                    if (elapsedTimeInSecond >= boundTime){
+                        timeBreaker = true;
+                        break;
+                    }
+
+                    Pair destinationCoordinate = possibleMoves.get(i);
+
+                    //System.out.println(destinationCoordinate);
+
+                    // saving the source and destination color for undoing the move
+                    sourceColor = board.getCurrentBoardState()[sourceCoordinate.getX()][sourceCoordinate.getY()];
+                    destinationColor = board.getCurrentBoardState()[destinationCoordinate.getX()][destinationCoordinate.getY()];
+
+                    // we perform the move
+                    this.board.movePiece(sourceCoordinate, destinationCoordinate);
+
+                    // we call the minValue method next
+                    value = minValue(d - 1, alpha, beta, this.agentColor);
+
+
+                    // we then undo the move for the next iteration
+                    this.board.undoMove(sourceCoordinate, destinationCoordinate, sourceColor, destinationColor);
+
+                    if (value > resultValue) {
+                        resultValue = value;
+                        move = sourceCoordinate.getX() + "," + sourceCoordinate.getY() + "#" + destinationCoordinate.getX() +
+                                "," + destinationCoordinate.getY();
+                    }
+
+                    alpha = Math.max(alpha, value);
+                }
+
+            }
+
+            bestMove = move;
         }
 
-        return move;
+
+//        for (Map.Entry<Pair, ArrayList<Pair>> entry: AllMoves.entrySet()){
+//
+//            // we take all the moves possible from a given source coordinate
+//            Pair sourceCoordinate = entry.getKey();
+//            ArrayList<Pair> possibleMoves= entry.getValue();
+//
+//            for (int i = 0; i < possibleMoves.size(); i++) {
+//                Pair destinationCoordinate = possibleMoves.get(i);
+//
+//                //System.out.println(destinationCoordinate);
+//
+//                // saving the source and destination color for undoing the move
+//                sourceColor = board.getCurrentBoardState()[sourceCoordinate.getX()][sourceCoordinate.getY()];
+//                destinationColor = board.getCurrentBoardState()[destinationCoordinate.getX()][destinationCoordinate.getY()];
+//
+//                // we perform the move
+//                this.board.movePiece(sourceCoordinate, destinationCoordinate);
+//
+//                // we call the minValue method next
+//                value = minValue(this.depth - 1, alpha, beta, this.agentColor);
+//                //System.out.println("VALUE" + value);
+//                // we then undo the move for the next iteration
+//                this.board.undoMove(sourceCoordinate, destinationCoordinate, sourceColor, destinationColor);
+//
+//                if (value > resultValue) {
+//                    resultValue = value;
+//                    move = sourceCoordinate.getX() + "," + sourceCoordinate.getY() + "#" + destinationCoordinate.getX() +
+//                            "," + destinationCoordinate.getY();
+//                }
+//
+//                alpha = Math.max(alpha, value);
+//            }
+//
+//        }
+
+        return bestMove;
     }
 
     public double maxValue(int depth, double alpha, double beta, int prevColor){
@@ -96,7 +154,10 @@ public class AdversarialSearch {
             return Double.NEGATIVE_INFINITY;
         }
 
-        if (depth == 0){
+        this.endTime = System.nanoTime();
+        double elapsedTimeInSecond = (double) (startTime-endTime) / 1_000_000_000;
+
+        if (depth == 0 || (elapsedTimeInSecond >= boundTime)){
             //return Heuristics.pieceSquareTable(this.board, this.agentColor);
             return Heuristics.finalEvaluator(this.board, this.agentColor);
         }
@@ -158,7 +219,10 @@ public class AdversarialSearch {
             return Double.NEGATIVE_INFINITY;
         }
 
-        if (depth == 0){
+        this.endTime = System.nanoTime();
+        double elapsedTimeInSecond = (double) (startTime-endTime) / 1_000_000_000;
+
+        if (depth == 0 || (elapsedTimeInSecond >= boundTime)){
             //return Heuristics.pieceSquareTable(this.board, this.agentColor);
             return Heuristics.finalEvaluator(this.board, this.agentColor);
         }
