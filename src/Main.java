@@ -9,5 +9,9 @@ public class Main {
         ls.setSize(handler.getBoardSize());
         ls.initiateLatinSquare(handler.readFile());
         ls.printBoard();
+        CSP cspobj= new CSP(ls);
+        cspobj.setUnassignedVariables();
+        cspobj.setAllDynamicDegrees();
+        cspobj.printAllDynamicDegrees();
     }
 }
