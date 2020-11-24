@@ -41,17 +41,6 @@ public class LatinSquare {
 
     }
 
-    public void setAllDynamicDegrees(){
-        for (int i = 0; i < this.size; i++) {
-            for (int j = 0; j < this.size; j++) {
-                if (this.board[i][j].getValue() == 0){
-
-                }
-            }
-        }
-    }
-
-
 
     public void printBoard(){
         for (int i = 0; i < this.size; i++) {

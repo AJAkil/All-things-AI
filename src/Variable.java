@@ -10,23 +10,17 @@ public class Variable {
     private int value;
     private ArrayList<Integer> domains;
     private int staticDegree;
+    private int dynamicDegree;
 
     public int getDynamicDegree() {
         return dynamicDegree;
     }
 
-    private int dynamicDegree;
 
     public void setDynamicDegree(int dynamicDegree) {
         this.dynamicDegree = dynamicDegree;
     }
 
-    public static Comparator<Variable> domainSizeComparator = new Comparator<Variable>() {
-        @Override
-        public int compare(Variable o1, Variable o2) {
-            return o1.domains.size() - o2.domains.size();
-        }
-    };
 
     @Override
     public String toString() {
@@ -91,4 +85,5 @@ public class Variable {
     public void setStaticDegree(int staticDegree) {
         this.staticDegree = staticDegree;
     }
+
 }

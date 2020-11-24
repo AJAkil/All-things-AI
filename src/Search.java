@@ -1,10 +1,10 @@
 import java.util.ArrayList;
 
-public class CSP {
+public class Search {
     ArrayList<Variable> unassignedVariables;
     LatinSquare square;
 
-    public CSP(LatinSquare square) {
+    public Search(LatinSquare square) {
         this.square = square;
         unassignedVariables = new ArrayList<>();
     }
@@ -51,6 +51,7 @@ public class CSP {
         }
     }
 
+
     public void updateDynamicDegree(int row,int col){
         for (int i = 0; i < this.square.getSize(); i++) {
             if (this.square.getBoard()[row][i].getValue() == 0){
@@ -63,5 +64,17 @@ public class CSP {
                 this.square.getBoard()[i][col].setDynamicDegree(this.square.getBoard()[row][i].getDynamicDegree()-1);
             }
         }
+    }
+
+    public boolean checkConstraint(int row, int col, int value){
+        for (int i = 0; i < this.square.getSize(); i++) {
+            if (this.square.getBoard()[row][i].getValue() == value && i!=col) return false;
+        }
+
+        for (int i = 0; i < this.square.getSize(); i++) {
+            if (this.square.getBoard()[i][col].getValue() == value && i!=row) return false;
+        }
+
+        return true;
     }
 }
