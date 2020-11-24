@@ -3,7 +3,7 @@ import java.util.Comparator;
 /**
  * used for sorting in ascending order of domain sizes
  */
-class DomainSizeComp implements Comparator<Variable>{
+class DomainSizeComparator implements Comparator<Variable>{
     @Override
     public int compare(Variable o1, Variable o2) {
         return o1.getDomains().size() - o2.getDomains().size();
@@ -20,18 +20,30 @@ class DynamicDegreeComparator implements Comparator<Variable>{
     }
 }
 
-
+/**
+ * The variable chosen is the one with the smallest domain.
+ * Ties are broken by choosing the variable with smallest domain and maximum forward degree.
+ */
 class BreluzComparator implements Comparator<Variable>{
     @Override
     public int compare(Variable o1, Variable o2) {
-        return 0;
+        if (o1.getDomains().size() == o2.getDomains().size()){
+            return o2.getDynamicDegree() - o1.getDynamicDegree();
+        }else return o1.getDomains().size() - o2.getDomains().size();
     }
 }
 
-
+/**
+ * The variable chosen is the one that minimizes the ratio of domain size to forward degree
+ * (i.e.the number of adjacent uninstantiated variables).
+ */
 class Domddeg implements Comparator<Variable>{
     @Override
     public int compare(Variable o1, Variable o2) {
-        return 0;
+
+        double ratio1=(double) o1.getDomains().size()/o1.getDomains().size();
+        double ratio2=(double) o2.getDomains().size()/o2.getDomains().size();
+
+        return (int) (ratio1 - ratio2);
     }
 }
