@@ -1,8 +1,21 @@
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 
 public class Search {
     ArrayList<Variable> unassignedVariables;
     LatinSquare square;
+    int nodeCounter = 0;
+
+    public int getNodeCounter() {
+        return nodeCounter;
+    }
+
+    public int getBacktracks() {
+        return backtracks;
+    }
+
+    int backtracks = 0;
 
     public Search(LatinSquare square) {
         this.square = square;
@@ -17,6 +30,52 @@ public class Search {
                 }
             }
         }
+    }
+
+    /**
+     * This function sets the domain for all the unassigned variable
+     */
+    public void setDomains(int size){
+
+        for (Variable v: unassignedVariables){
+
+            ArrayList<Integer> initialDomains = new ArrayList<>();
+
+            for (int i = 0; i < size; i++) {
+                initialDomains.add(i+1);
+            }
+
+            int row = v.getRow();
+            int col = v.getCol();
+
+            //row
+            for (int i = 0; i < this.square.getSize(); i++) {
+                int value = this.square.getBoard()[row][i].getValue();
+                if (value != 0){
+                    initialDomains.remove((Integer) value);
+                }
+            }
+
+            //col
+            for (int i = 0; i < this.square.getSize(); i++) {
+                int value = this.square.getBoard()[i][col].getValue();
+                if (value != 0){
+                    initialDomains.remove((Integer) value);
+                }
+            }
+
+            v.setDomains(new ArrayList<>());
+
+            for (Integer initialDomain : initialDomains) {
+                v.getDomains().add(initialDomain);
+            }
+
+//            System.out.println("r,c = "+v.getRow() + "," + v.getCol());
+//            System.out.println("DOM="+v.getDomains());
+        }
+
+
+
     }
 
     public void setAllDynamicDegrees(){
@@ -51,7 +110,6 @@ public class Search {
         }
     }
 
-
     public void updateDynamicDegree(int row,int col){
         for (int i = 0; i < this.square.getSize(); i++) {
             if (this.square.getBoard()[row][i].getValue() == 0){
@@ -76,5 +134,46 @@ public class Search {
         }
 
         return true;
+    }
+
+    public boolean backtracking(int heuristic){
+
+        this.nodeCounter++;
+
+        //check to see if the variable list is empty, if so return true
+        if (this.unassignedVariables.size() == 0) return true;
+
+        // select a variable by sorting the list of variables
+        this.unassignedVariables.sort(new DomainSizeComparator());
+        Variable v = this.unassignedVariables.get(0);
+        this.unassignedVariables.remove(0);
+
+        // loop through the list of domains
+        for (int i = 0; i < v.getDomains().size(); i++) {
+
+            int domain = v.getDomains().get(i);
+
+            if (this.checkConstraint(v.getRow(),v.getCol(), domain)){
+
+                this.square.getBoard()[v.getRow()][v.getCol()].setValue(domain);
+
+                boolean result = this.backtracking(heuristic);
+
+                if (result) {
+                    this.square.printBoard();
+                    System.out.println();
+                    return true;
+                }
+
+                // restoring to the previous state
+                this.backtracks++;
+                this.square.getBoard()[v.getRow()][v.getCol()].setValue(0);
+            }
+        }
+
+
+        this.unassignedVariables.add(v);
+        return false;
+
     }
 }

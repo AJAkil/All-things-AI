@@ -1,6 +1,7 @@
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Objects;
 
@@ -43,6 +44,7 @@ public class FileHandler {
             String[] splittedLine = strCurrentLine.split(",");
             board += splittedLine[0]+",";
 
+            //System.out.println(Arrays.toString(splittedLine));
             for (int i = 1; i <splittedLine.length ; i++) {
                 board +=  splittedLine[i].split(" ")[1]+",";
             }

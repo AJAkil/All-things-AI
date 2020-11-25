@@ -24,6 +24,7 @@ public class LatinSquare {
 
         for (String value : s) {
             String[] cellValues = value.split(",");
+            System.out.println(Arrays.toString(cellValues));
 
             for (int i = 0; i < cellValues.length; i++) {
 
@@ -31,7 +32,7 @@ public class LatinSquare {
                 v.setRow(row);
                 v.setCol(i);
                 v.setValue(Integer.parseInt(cellValues[i]));
-                v.setDomains(this.size);
+                //v.setDomains(this.size);
                 v.setStaticDegree((this.size-1)*2);
 
                 this.board[row][i] = v;

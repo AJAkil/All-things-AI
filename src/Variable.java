@@ -24,9 +24,7 @@ public class Variable {
 
     @Override
     public String toString() {
-        return "{" +
-                "value=" + value +
-                '}';
+        return String.valueOf(value);
     }
 
     public void setDomains(int maxValue){
