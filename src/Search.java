@@ -110,16 +110,29 @@ public class Search {
         }
     }
 
-    public void updateDynamicDegree(int row,int col){
+    public void updateDynamicDegree(int row,int col, boolean isBacktracking){
         for (int i = 0; i < this.square.getSize(); i++) {
             if (this.square.getBoard()[row][i].getValue() == 0){
-                this.square.getBoard()[row][i].setDynamicDegree(this.square.getBoard()[row][i].getDynamicDegree()-1);
+                if ((isBacktracking)) {
+                    this.square.getBoard()[row][i].
+                            setDynamicDegree(this.square.getBoard()[row][i].getDynamicDegree() + 1);
+                } else {
+                    this.square.getBoard()[row][i].
+                            setDynamicDegree(this.square.getBoard()[row][i].getDynamicDegree() - 1);
+                }
             }
         }
 
         for (int i = 0; i < this.square.getSize(); i++) {
             if (this.square.getBoard()[i][col].getValue() == 0){
-                this.square.getBoard()[i][col].setDynamicDegree(this.square.getBoard()[row][i].getDynamicDegree()-1);
+                if (isBacktracking){
+                    this.square.getBoard()[i][col].
+                            setDynamicDegree(this.square.getBoard()[row][i].getDynamicDegree() + 1);
+                } else {
+                    this.square.getBoard()[i][col].
+                            setDynamicDegree(this.square.getBoard()[row][i].getDynamicDegree() - 1);
+                }
+
             }
         }
     }
@@ -136,7 +149,7 @@ public class Search {
         return true;
     }
 
-    public boolean backtracking(int heuristic){
+    public boolean backtracking(String heuristic){
 
         this.nodeCounter++;
 
@@ -144,7 +157,8 @@ public class Search {
         if (this.unassignedVariables.size() == 0) return true;
 
         // select a variable by sorting the list of variables
-        this.unassignedVariables.sort(new DomainSizeComparator());
+        this.sortByVariableOrdering(heuristic);
+
         Variable v = this.unassignedVariables.get(0);
         this.unassignedVariables.remove(0);
 
@@ -175,5 +189,17 @@ public class Search {
         this.unassignedVariables.add(v);
         return false;
 
+    }
+
+    public void sortByVariableOrdering(String heuristic){
+        if (heuristic.equalsIgnoreCase("DomainSize")){
+            this.unassignedVariables.sort(new DomainSizeComparator());
+        }else if (heuristic.equalsIgnoreCase("DynamicDegree")){
+            this.unassignedVariables.sort(new DynamicDegreeComparator());
+        }else if(heuristic.equalsIgnoreCase("Breluz")){
+            this.unassignedVariables.sort(new BreluzComparator());
+        }else if(heuristic.equalsIgnoreCase("Domddeg")){
+            this.unassignedVariables.sort(new Domddeg());
+        }
     }
 }

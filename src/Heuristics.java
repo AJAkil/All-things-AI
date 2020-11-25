@@ -41,8 +41,8 @@ class Domddeg implements Comparator<Variable>{
     @Override
     public int compare(Variable o1, Variable o2) {
 
-        double ratio1=(double) o1.getDomains().size()/o1.getDomains().size();
-        double ratio2=(double) o2.getDomains().size()/o2.getDomains().size();
+        double ratio1=(double) o1.getDomains().size()/o1.getDynamicDegree();
+        double ratio2=(double) o2.getDomains().size()/o2.getDynamicDegree();
 
         return (int) (ratio1 - ratio2);
     }

@@ -21,7 +21,7 @@ public class Main {
         ls.printBoard();
         //cspobj.printAllDynamicDegrees();
         //System.out.println(cspobj.checkConstraint(7,8,8));
-        System.out.println(cspobj.backtracking(0));
+        System.out.println(cspobj.backtracking("DynamicDegree"));
         System.out.println(cspobj.getNodeCounter());
         System.out.println(cspobj.getBacktracks());
     }
