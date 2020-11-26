@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.Objects;
 
 public class Variable {
 
@@ -21,6 +22,24 @@ public class Variable {
         this.dynamicDegree = dynamicDegree;
     }
 
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Variable variable = (Variable) o;
+        return row == variable.row &&
+                col == variable.col &&
+                value == variable.value &&
+                staticDegree == variable.staticDegree &&
+                dynamicDegree == variable.dynamicDegree &&
+                Objects.equals(domains, variable.domains);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(row, col, value, domains, staticDegree, dynamicDegree);
+    }
 
     @Override
     public String toString() {
