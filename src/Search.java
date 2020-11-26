@@ -1,3 +1,4 @@
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -145,28 +146,29 @@ public class Search {
 
 
     public void reduceNeighborDomains(int row, int col, int valuePutOnBoard){
-        this.trackerList.clear();
+
+        //this.trackerList.clear();
         track++;
-        System.out.println("track in domain-reduction "+track);
+        //System.out.println("track in domain-reduction "+track);
         // row
         for (int i = 0; i < this.square.getSize(); i++) {
 
-            if (this.square.getBoard()[row][i].getValue() == 0){
+            if (this.square.getBoard()[row][i].getValue() == 0 && i!=col){
                     // checking to see if the value I put is on the domain of unassigned neighbor
                 if (this.square.getBoard()[row][i].getDomains().contains(valuePutOnBoard)){
-                    this.trackerList.add(this.square.getBoard()[row][i]);
                     this.square.getBoard()[row][i].getDomains().remove((Integer)valuePutOnBoard);
+                    this.trackerList.add(this.square.getBoard()[row][i]);
                 }
             }
         }
 
         // column
         for (int i = 0; i < this.square.getSize(); i++) {
-            if (this.square.getBoard()[i][col].getValue() == 0){
+            if (this.square.getBoard()[i][col].getValue() == 0 && i!=row){
                 // checking to see if the value I put is on the domain of unassigned neighbor
                 if (this.square.getBoard()[i][col].getDomains().contains(valuePutOnBoard)){
-                    this.trackerList.add(this.square.getBoard()[i][col]);
                     this.square.getBoard()[i][col].getDomains().remove((Integer)valuePutOnBoard);
+                    this.trackerList.add(this.square.getBoard()[i][col]);
                 }
             }
         }
@@ -180,12 +182,14 @@ public class Search {
         return false;
     }
 
-    public void restoreNeighborDomain(int value){
-        for (Variable v: this.trackerList){
-            v.getDomains().add(value);
-        }
-        this.trackerList.clear();
-    }
+//    public void restoreNeighborDomain(int value){
+//        //System.out.println("here");
+//        for (String s: this.coords){
+//            String[] splitted = s.split(",");
+//            this.square.getBoard()[Integer.parseInt(splitted[0])][Integer.parseInt(splitted[1])].getDomains().add(value);
+//        }
+//        //this.trackerList.clear();
+//    }
 
     public boolean checkConstraint(int row, int col, int value){
         for (int i = 0; i < this.square.getSize(); i++) {
@@ -261,16 +265,13 @@ public class Search {
     public boolean forwardChecking(String heuristic){
 
         this.nodeCounter++;
-        System.out.println("SIZE = "+unassignedVariables.size());
 
         //check to see if the variable list is empty, if so return true
         if (this.unassignedVariables.size() == 0) return true;
 
         // select a variable by sorting the list of variables
         this.sortByVariableOrdering(heuristic);
-
         Variable v = this.unassignedVariables.get(0);
-        //System.out.println("r,c=" + v.getRow()+","+v.getCol());
         this.unassignedVariables.remove(0);
 
         // loop through the list of domains
@@ -283,16 +284,10 @@ public class Search {
                 this.square.getBoard()[v.getRow()][v.getCol()].setValue(domain);
 
                 // reduction phase
+                this.trackerList.clear();
                 this.reduceNeighborDomains(v.getRow(), v.getCol(), domain);
 
-                if (this.isAnyNeighborDomainZero()){
-
-                    this.square.getBoard()[v.getRow()][v.getCol()].setValue(0);
-                    this.restoreNeighborDomain(domain);
-                    track--;
-                    System.out.println("track if domain is zero "+track);
-
-                }else{
+                if (!this.isAnyNeighborDomainZero()){
 
                     if (!heuristic.equalsIgnoreCase("DomainSize")){
                         this.updateDynamicDegree(v.getRow(), v.getCol(), false);
@@ -301,7 +296,6 @@ public class Search {
                     boolean result = this.forwardChecking(heuristic);
 
                     if (result) {
-                        System.out.println("WTF");
 //                        this.square.printBoard();
 //                        System.out.println();
                         return true;
@@ -309,19 +303,22 @@ public class Search {
 
                     // restoring to the previous state
                     this.backtracks++;
-                    this.restoreNeighborDomain(domain);
+
 
                     if (!heuristic.equalsIgnoreCase("DomainSize")){
                         this.updateDynamicDegree(v.getRow(), v.getCol(), true);
                     }
 
-                    this.square.getBoard()[v.getRow()][v.getCol()].setValue(0);
                 }
+
+                this.square.getBoard()[v.getRow()][v.getCol()].setValue(0);
+                this.setDomains(this.square.getSize());
+
             }
         }
 
         this.unassignedVariables.add(v);
-        System.out.println("size="+this.unassignedVariables.size());
+        //System.out.println("size="+this.unassignedVariables.size());
         return false;
     }
 

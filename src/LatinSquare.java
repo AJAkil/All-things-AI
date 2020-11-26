@@ -24,7 +24,7 @@ public class LatinSquare {
 
         for (String value : s) {
             String[] cellValues = value.split(",");
-            System.out.println(Arrays.toString(cellValues));
+//            System.out.println(Arrays.toString(cellValues));
 
             for (int i = 0; i < cellValues.length; i++) {
 
