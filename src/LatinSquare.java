@@ -4,18 +4,10 @@ public class LatinSquare {
     private int size;
     Variable [][] board;
 
-    public int getSize() {
-        return size;
-    }
-
-    public Variable[][] getBoard() {
-        return board;
-    }
-
-    public void setSize(int size) {
-        this.size = size;
-    }
-
+    /**
+     * Initiates the latin square with the data read from the files
+     * @param boardData The data that is read from the files
+     */
     public void initiateLatinSquare(String boardData){
 
         this.board = new Variable[this.size][this.size];
@@ -43,6 +35,9 @@ public class LatinSquare {
     }
 
 
+    /**
+     * Prints the board
+     */
     public void printBoard(){
         for (int i = 0; i < this.size; i++) {
             for (int j = 0; j < this.size; j++) {
@@ -51,6 +46,7 @@ public class LatinSquare {
             System.out.println();
         }
     }
+
 
     /**
      * This method checks if the current state of the latin square is complete or not
@@ -85,6 +81,7 @@ public class LatinSquare {
         return true;
     }
 
+
     /**
      * This method gives the required sum for the rows or columns of the latin square
      * @return
@@ -98,5 +95,17 @@ public class LatinSquare {
         }
 
         return sum;
+    }
+
+    public int getSize() {
+        return size;
+    }
+
+    public Variable[][] getBoard() {
+        return board;
+    }
+
+    public void setSize(int size) {
+        this.size = size;
     }
 }

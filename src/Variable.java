@@ -5,7 +5,6 @@ import java.util.Objects;
 
 public class Variable {
 
-
     private int row;
     private int col;
     private int value;
@@ -17,11 +16,9 @@ public class Variable {
         return dynamicDegree;
     }
 
-
     public void setDynamicDegree(int dynamicDegree) {
         this.dynamicDegree = dynamicDegree;
     }
-
 
     @Override
     public boolean equals(Object o) {
@@ -44,23 +41,6 @@ public class Variable {
     @Override
     public String toString() {
         return String.valueOf(value);
-    }
-
-    public void setDomains(int maxValue){
-
-        domains = new ArrayList<>();
-
-        if (this.value == 0){
-            for (int i = 0; i < maxValue; i++) {
-                this.domains.add(i+1);
-            }
-        }else{
-            this.domains.add(-1);
-        }
-    }
-
-    public void calculateDynamicDegree(){
-
     }
 
     public int getRow() {
@@ -93,10 +73,6 @@ public class Variable {
 
     public void setDomains(ArrayList<Integer> domains) {
         this.domains = domains;
-    }
-
-    public int getStaticDegree() {
-        return staticDegree;
     }
 
     public void setStaticDegree(int staticDegree) {

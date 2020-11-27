@@ -1,5 +1,6 @@
 import java.util.Comparator;
 
+
 /**
  * used for sorting in ascending order of domain sizes
  */
@@ -10,6 +11,7 @@ class DomainSizeComparator implements Comparator<Variable>{
     }
 }
 
+
 /**
  * used for sorting in descending order of dynamic degree, that is max degree is first
  */
@@ -19,6 +21,7 @@ class DynamicDegreeComparator implements Comparator<Variable>{
         return o2.getDynamicDegree() - o1.getDynamicDegree();
     }
 }
+
 
 /**
  * The variable chosen is the one with the smallest domain.
@@ -32,6 +35,7 @@ class BreluzComparator implements Comparator<Variable>{
         }else return o1.getDomains().size() - o2.getDomains().size();
     }
 }
+
 
 /**
  * The variable chosen is the one that minimizes the ratio of domain size to forward degree

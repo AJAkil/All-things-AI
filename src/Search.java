@@ -4,20 +4,12 @@ import java.util.Arrays;
 import java.util.Collections;
 
 public class Search {
+
     ArrayList<Variable> unassignedVariables;
     ArrayList<Variable> trackerList;
     LatinSquare square;
     int nodeCounter = 0;
     int backtracks = 0;
-    int track = 0;
-
-    public int getNodeCounter() {
-        return nodeCounter;
-    }
-
-    public int getBacktracks() {
-        return backtracks;
-    }
 
     public Search(LatinSquare square) {
         this.square = square;
@@ -25,6 +17,10 @@ public class Search {
         trackerList = new ArrayList<>();
     }
 
+
+    /**
+     * Pushes the initial unassigned variables to the unassigned list
+     */
     public void setUnassignedVariables(){
         for (int i = 0; i < this.square.getSize(); i++) {
             for (int j = 0; j < this.square.getSize(); j++) {
@@ -34,6 +30,7 @@ public class Search {
             }
         }
     }
+
 
     /**
      * This function sets the domain for all the unassigned variable
@@ -81,6 +78,10 @@ public class Search {
 
     }
 
+
+    /**
+     * Sets all the dynamic degrees of unassigned variables
+     */
     public void setAllDynamicDegrees(){
         for (Variable unassignedVariable : this.unassignedVariables) {
 
@@ -106,6 +107,10 @@ public class Search {
         }
     }
 
+
+    /**
+     * Used for printing the dynamic degrees of the unassigned variables
+     */
     public void printAllDynamicDegrees(){
         System.out.println(this.unassignedVariables.size());
         for (Variable unassignedVariable : this.unassignedVariables) {
@@ -113,6 +118,13 @@ public class Search {
         }
     }
 
+
+    /**
+     * Updates(increases or decreases) the dynamic degrees of the unassigned neighbors of a cell that is being filled up
+     * @param row The row of the variable that is filled up
+     * @param col The column of the variable that is filled up
+     * @param isBacktracking Parameter that defines whether the method is called during backtracking or not
+     */
     public void updateDynamicDegree(int row,int col, boolean isBacktracking){
 
         for (int i = 0; i < this.square.getSize(); i++) {
@@ -145,11 +157,14 @@ public class Search {
     }
 
 
+    /**
+     * This method reduces the domains of the unassigned neighbors, used for forward checking
+     * @param row The row of the variable that is filled up
+     * @param col The column of the variable that is filled up
+     * @param valuePutOnBoard The value used to fill up the variable cell
+     */
     public void reduceNeighborDomains(int row, int col, int valuePutOnBoard){
 
-        //this.trackerList.clear();
-        track++;
-        //System.out.println("track in domain-reduction "+track);
         // row
         for (int i = 0; i < this.square.getSize(); i++) {
 
@@ -175,6 +190,11 @@ public class Search {
 
     }
 
+
+    /**
+     * This method checks if the size of any neighbor domain is zero or not
+     * @return true if size is zero, else false
+     */
     public boolean isAnyNeighborDomainZero(){
         for (Variable v: this.trackerList){
             if (v.getDomains().size() == 0) return true;
@@ -191,6 +211,14 @@ public class Search {
 //        //this.trackerList.clear();
 //    }
 
+
+    /**
+     * This method checks whether a value is following the constraints of Latin Square or not
+     * @param row The row of the variable
+     * @param col The column of the variable
+     * @param value value is used to check the constraint whether it can be put on row and column of the cell
+     * @return True if the constraint is satisfied, else False
+     */
     public boolean checkConstraint(int row, int col, int value){
         for (int i = 0; i < this.square.getSize(); i++) {
             if (this.square.getBoard()[row][i].getValue() == value && i!=col) return false;
@@ -203,6 +231,16 @@ public class Search {
         return true;
     }
 
+
+    /**
+     * The main backtracking algorithm that performs the job of searching the final state.
+     * Used naive backtracking by looping through the possible domains of a certain variable.
+     * The variables are ordered by a certain heuristic. The state and other fields are changed
+     * and restored accordingly if the backtrack fails. The nodes and number of backtracks are
+     * counted at every recursive call of the function. This is done for reporting purposes.
+     * @param heuristic The heuristic that defines how the variables are to be ordered.
+     * @return True if we find a solution, else False
+     */
     public boolean backtracking(String heuristic){
 
         this.nodeCounter++;
@@ -233,7 +271,6 @@ public class Search {
                 boolean result = this.backtracking(heuristic);
 
                 if (result) {
-//                    System.out.println("WTF");
 //                    this.square.printBoard();
 //                    System.out.println();
                     return true;
@@ -258,10 +295,20 @@ public class Search {
     }
 
 
-    public int getTrack() {
-        return track;
-    }
-
+    /**
+     * The forward checking algorithm that performs the job of searching the final state.
+     * Used forward checking by looping through the possible domains of a certain variable.
+     * The variables are ordered by a certain heuristic. The domains of the neighbors of a
+     * variable that is just being filled are reduced. This domain reduction accounts for faster
+     * searching and more pruning of the state space tree. The domains are restored if the recursive
+     * call fails. If the size of any domains become zero, then the recursive call is not further
+     * considered and the next available domain of the variable in question is explored.
+     * The state and other fields are changed and restored accordingly if the backtrack fails.
+     * The nodes and number of backtracks are counted at every recursive call of the function.
+     * This is done for reporting purposes.
+     * @param heuristic The heuristic that defines how the variables are to be ordered.
+     * @return True if we find a solution, else False
+     */
     public boolean forwardChecking(String heuristic){
 
         this.nodeCounter++;
@@ -309,6 +356,9 @@ public class Search {
                         this.updateDynamicDegree(v.getRow(), v.getCol(), true);
                     }
 
+                }else{
+                    nodeCounter++;
+                    backtracks++;
                 }
 
                 this.square.getBoard()[v.getRow()][v.getCol()].setValue(0);
@@ -318,11 +368,16 @@ public class Search {
         }
 
         this.unassignedVariables.add(v);
-        //System.out.println("size="+this.unassignedVariables.size());
         return false;
     }
 
 
+    /**
+     * This method returns a suitable comparator based on a certain heuristic. This is
+     * used for sorting the variables of the latin square in the backtracking and
+     * forward checking search algorithms.
+     * @param heuristic The heuristic that defines how the variables are to be ordered.
+     */
     public void sortByVariableOrdering(String heuristic){
         if (heuristic.equalsIgnoreCase("DomainSize")){
             this.unassignedVariables.sort(new DomainSizeComparator());
@@ -333,6 +388,14 @@ public class Search {
         }else if(heuristic.equalsIgnoreCase("Domddeg")){
             this.unassignedVariables.sort(new Domddeg());
         }
+    }
+
+    public int getNodeCounter() {
+        return nodeCounter;
+    }
+
+    public int getBacktracks() {
+        return backtracks;
     }
 
     public void setNodeCounter(int nodeCounter) {
