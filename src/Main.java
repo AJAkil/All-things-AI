@@ -4,8 +4,6 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) throws IOException {
 
-        long startTime, endTime;
-
         String[] Heuristics = {"DomainSize", "Breluz", "Domddeg"};
 
         for (String h: Heuristics){
@@ -31,7 +29,7 @@ public class Main {
                 cspobj2.setDomains(ls2.getSize());
 
                 cspobj2.forwardChecking(h);
-                System.out.println("Nodes: "+cspobj2.getNodeCounter());
+                System.out.println("Nodes: "+(cspobj2.getNodeCounter()-1));
                 System.out.println("Backtracks: "+cspobj2.getBacktracks());
                 System.out.println("Is Latin Square Complete?: "+ls2.isLatinSquareComplete()+"\n");
                 //ls2.printBoard();
@@ -51,10 +49,10 @@ public class Main {
                 //ls.printBoard();
                 //cspobj.printAllDynamicDegrees();
                 cspobj.backtracking(h);
-                System.out.println("Nodes: "+cspobj.getNodeCounter());
+                System.out.println("Nodes: "+ (cspobj.getNodeCounter() - 1));
                 System.out.println("Backtracks: "+cspobj.getBacktracks());
                 System.out.println("Is Latin Square Complete?: "+ls.isLatinSquareComplete()+"\n");
-//        ls.printBoard();
+        //ls.printBoard();
             }
         }
 
