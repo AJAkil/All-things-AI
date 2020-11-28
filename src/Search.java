@@ -8,8 +8,8 @@ public class Search {
     ArrayList<Variable> unassignedVariables;
     ArrayList<Variable> trackerList;
     LatinSquare square;
-    int nodeCounter = 0;
-    int backtracks = 0;
+    long nodeCounter = 0;
+    long backtracks = 0;
 
     public Search(LatinSquare square) {
         this.square = square;
@@ -241,10 +241,11 @@ public class Search {
      * @param heuristic The heuristic that defines how the variables are to be ordered.
      * @return True if we find a solution, else False
      */
+
+
     public boolean backtracking(String heuristic){
 
         this.nodeCounter++;
-        //System.out.println(nodeCounter);
 
         //check to see if the variable list is empty, if so return true
         if (this.unassignedVariables.size() == 0) return true;
@@ -277,7 +278,7 @@ public class Search {
                 }
 
                 // restoring to the previous state
-                this.backtracks++;
+                //this.backtracks++;
 
                 if (!heuristic.equalsIgnoreCase("DomainSize")){
                     this.updateDynamicDegree(v.getRow(), v.getCol(), true);
@@ -285,7 +286,9 @@ public class Search {
 
                 this.square.getBoard()[v.getRow()][v.getCol()].setValue(0);
 
-
+            }else{
+                nodeCounter++;
+                backtracks++;
             }
         }
 
@@ -349,9 +352,7 @@ public class Search {
                     }
 
                     // restoring to the previous state
-                    this.backtracks++;
-
-
+                    //this.backtracks++;
                     if (!heuristic.equalsIgnoreCase("DomainSize")){
                         this.updateDynamicDegree(v.getRow(), v.getCol(), true);
                     }
@@ -364,6 +365,9 @@ public class Search {
                 this.square.getBoard()[v.getRow()][v.getCol()].setValue(0);
                 this.setDomains(this.square.getSize());
 
+            }else{
+                nodeCounter++;
+                backtracks++;
             }
         }
 
@@ -390,11 +394,11 @@ public class Search {
         }
     }
 
-    public int getNodeCounter() {
+    public long getNodeCounter() {
         return nodeCounter;
     }
 
-    public int getBacktracks() {
+    public long getBacktracks() {
         return backtracks;
     }
 
