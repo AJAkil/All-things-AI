@@ -41,7 +41,7 @@ public class HumanVsAI extends GamePlay {
 
         while (true){
 
-            int x,y;
+            int x,y,a,b;
             int turnColor;
 
             if (this.getTurn() == player1Color) {
@@ -74,9 +74,18 @@ public class HumanVsAI extends GamePlay {
                     if (choice.equalsIgnoreCase("yes")) break;
                 }
 
-                System.out.println("Enter your Destination!");
-                int a =  Integer.parseInt(scanner.nextLine()) - 1;
-                int b =  Integer.parseInt(scanner.nextLine()) - 1;
+                while (true) {
+
+                    System.out.println("Enter your Destination!");
+                    a =  Integer.parseInt(scanner.nextLine()) - 1;
+                    b =  Integer.parseInt(scanner.nextLine()) - 1;
+
+                    if (!board.getNextPossibleMoves().contains(new Pair(a,b))){
+                        System.out.println("WRONG MOVE, TRY AGAIN.");
+                    }else{
+                        break;
+                    }
+                }
 
                 board.movePiece(new Pair(x,y), new Pair(a,b));
                 board.printBoard();
