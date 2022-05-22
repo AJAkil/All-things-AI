@@ -1,2 +1,4 @@
 data/
 *.net
+# Project exclude paths
+/out/
