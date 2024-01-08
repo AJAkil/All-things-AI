@@ -950,7 +950,6 @@ class Adaboost:
         self.W = W
 
 
-<<<<<<< HEAD
 def preprocess_bank_data(df, label, num_of_features):
     util = Utility()
     df.dropna(axis=0, subset=[label])
@@ -1007,11 +1006,6 @@ def preprocess_bank_data(df, label, num_of_features):
 def run_churn_lgr(df, label, max_iter, lr):
     print('Logistic Regression Training Metric (Churn Dataset)')
     lgr = LogisticRegression(learning_rate=lr, max_iter=max_iter, test_size=0.2, early_stop_error=0, decay=5e-6)
-=======
-def run_churn_lgr(df, label):
-    print('Logistic Regression Training Metric (Churn Dataset)')
-    lgr = LogisticRegression(learning_rate=0.1, max_iter=1000, test_size=0.2, early_stop_error=0, decay=5e-6)
->>>>>>> 4ac3c13078168c5aa2e607a73f0c6526fc7a234a
     lgr.split_dataset(df, label)
     lgr.fit(is_constant_lr=False, no_curve=True, calculate_metric_on_train=True)
 
@@ -1040,15 +1034,9 @@ def run_churn_adaboost(df, label, boosting_rounds):
     print()
 
 
-<<<<<<< HEAD
 def run_adult_lgr(train_df, test_df, label, max_iter, lr):
     print('Logistic Regression Training Metric (Adult Income Dataset)')
     lgr = LogisticRegression(learning_rate=lr, max_iter=max_iter, test_size=0.2, early_stop_error=0, decay=6e-6)
-=======
-def run_adult_lgr(train_df, test_df, label):
-    print('Logistic Regression Training Metric (Adult Income Dataset)')
-    lgr = LogisticRegression(learning_rate=0.1, max_iter=1000, test_size=0.2, early_stop_error=0, decay=6e-6)
->>>>>>> 4ac3c13078168c5aa2e607a73f0c6526fc7a234a
     lgr.split_given_train_test_df(train_df, test_df, label)
     lgr.fit(is_constant_lr=True, no_curve=True, calculate_metric_on_train=True)
 
@@ -1057,35 +1045,21 @@ def run_adult_lgr(train_df, test_df, label):
     print()
 
 
-<<<<<<< HEAD
 def run_adult_adaboost(train_df, test_df, label, boosting_rounds, learner_miter, learner_lr, learner_estop):
     print('Adaboost Training Metric (Adult Income Dataset)')
     adaboost_classifier = Adaboost(num_of_learner=boosting_rounds, test_size=0.2)
     adaboost_classifier.split_dataset_given_tran_test(train_df, test_df, label)
     adaboost_classifier.fit(base_learner_max_iter=learner_miter, error=learner_estop, learning_rate=learner_lr,
                             decay=5e-6, var_lr=False)
-=======
-def run_adult_adaboost(train_df, test_df, label, boosting_rounds):
-    print('Adaboost Training Metric (Adult Income Dataset)')
-    adaboost_classifier = Adaboost(num_of_learner=boosting_rounds, test_size=0.2)
-    adaboost_classifier.split_dataset_given_tran_test(train_df, test_df, label)
-    adaboost_classifier.fit(base_learner_max_iter=1000, error=0.5, learning_rate=0.1, decay=5e-6, var_lr=False)
->>>>>>> 4ac3c13078168c5aa2e607a73f0c6526fc7a234a
 
     print('\nAdaboost Testing Metric (Adult Income Dataset)')
     adaboost_classifier.predict()
     print()
 
 
-<<<<<<< HEAD
 def run_fraud_lgr(df, label, max_iter, lr):
     print('Logistic Regression Training Metric (Fraud Dataset)')
     lgr = LogisticRegression(learning_rate=lr, max_iter=max_iter, test_size=0.2, early_stop_error=0, decay=6e-6)
-=======
-def run_fraud_lgr(df, label):
-    print('Logistic Regression Training Metric (Fraud Dataset)')
-    lgr = LogisticRegression(learning_rate=0.1, max_iter=1000, test_size=0.2, early_stop_error=0, decay=6e-6)
->>>>>>> 4ac3c13078168c5aa2e607a73f0c6526fc7a234a
     lgr.split_dataset(df, label)
     lgr.fit(is_constant_lr=True, no_curve=True, calculate_metric_on_train=True)
 
@@ -1094,27 +1068,18 @@ def run_fraud_lgr(df, label):
     print()
 
 
-<<<<<<< HEAD
 def run_fraud_adaboost(df, label, boosting_rounds, learner_miter, learner_lr, learner_estop):
     print('Adaboost Training Metric (Fraud Dataset)')
     adaboost_classifier = Adaboost(num_of_learner=boosting_rounds, test_size=0.2)
     adaboost_classifier.split_dataset(df, label=label)
     adaboost_classifier.fit(base_learner_max_iter=learner_miter, error=learner_estop, learning_rate=learner_lr,
                             decay=5e-6, var_lr=False)
-=======
-def run_fraud_adaboost(df, label, boosting_rounds):
-    print('Adaboost Training Metric (Fraud Dataset)')
-    adaboost_classifier = Adaboost(num_of_learner=boosting_rounds, test_size=0.2)
-    adaboost_classifier.split_dataset(df, label=label)
-    adaboost_classifier.fit(base_learner_max_iter=1000, error=0.5, learning_rate=0.1, decay=5e-6, var_lr=False)
->>>>>>> 4ac3c13078168c5aa2e607a73f0c6526fc7a234a
 
     print('\nAdaboost Testing Metric (Fraud Dataset)')
     adaboost_classifier.predict()
     print()
 
 
-<<<<<<< HEAD
 def run_churn_all(df, label, boosting_rounds, lgr_miter, lgr_lr, ab_learner_miter, ab_learner_lr, ab_learner_estop):
     run_churn_lgr(df, label, lgr_miter, lgr_lr)
     run_churn_adaboost(df, label, boosting_rounds, ab_learner_miter, ab_learner_lr, ab_learner_estop)
@@ -1158,21 +1123,6 @@ def run_bank_all(df, label, boosting_rounds, lgr_miter, lgr_lr, ab_learner_miter
                  ab_learner_estop):
     run_bank_lgr(df, label, lgr_miter, lgr_lr)
     run_bank_adaboost(df, label, boosting_rounds, ab_learner_miter, ab_learner_lr, ab_learner_estop)
-=======
-def run_churn_all(df, label, boosting_rounds):
-    run_churn_lgr(df, label)
-    run_churn_adaboost(df, label, boosting_rounds)
-
-
-def run_adult_all(train_df, test_df, label, boosting_rounds):
-    run_adult_lgr(train_df, test_df, label)
-    run_adult_adaboost(train_df, test_df, label, boosting_rounds)
-
-
-def run_fraud_all(df, label, boosting_rounds):
-    run_fraud_lgr(df, label)
-    run_fraud_adaboost(df, label, boosting_rounds)
->>>>>>> 4ac3c13078168c5aa2e607a73f0c6526fc7a234a
 
 
 if __name__ == '__main__':
@@ -1196,14 +1146,11 @@ if __name__ == '__main__':
                         type=str,
                         help='the path to the fraud dataset')
 
-<<<<<<< HEAD
     parser.add_argument('--bank',
                         metavar='bank',
                         type=str,
                         help='the path to the bank dataset')
 
-=======
->>>>>>> 4ac3c13078168c5aa2e607a73f0c6526fc7a234a
     parser.add_argument('--dataset',
                         metavar='dataset',
                         type=int,
@@ -1217,7 +1164,6 @@ if __name__ == '__main__':
     parser.add_argument('--brounds',
                         metavar='brounds',
                         type=int,
-<<<<<<< HEAD
                         help='Boosting Rounds')
 
     parser.add_argument('--lgr_miter',
@@ -1244,9 +1190,6 @@ if __name__ == '__main__':
                         metavar='ab_learner_estop',
                         type=float,
                         help='Adaboost weak learner early stop')
-=======
-                        help='number of boosting rounds')
->>>>>>> 4ac3c13078168c5aa2e607a73f0c6526fc7a234a
 
     # Execute the parse_args() method
     args = parser.parse_args()
@@ -1254,7 +1197,6 @@ if __name__ == '__main__':
     churn_data_path = args.churn
     adult_data_path = args.adult
     fraud_data_path = args.fraud
-<<<<<<< HEAD
     bank_data_path = args.bank
     dataset_to_use = args.dataset
     num_of_feature = args.featnum
@@ -1264,11 +1206,6 @@ if __name__ == '__main__':
     ab_learner_miter = args.ab_learner_miter
     ab_learner_lr = args.ab_learner_lr
     ab_learner_estop = args.ab_learner_estop
-=======
-    dataset_to_use = args.dataset
-    num_of_feature = args.featnum
-    boosting_rounds = args.brounds
->>>>>>> 4ac3c13078168c5aa2e607a73f0c6526fc7a234a
 
     # preprocess churn dataset
     df = pd.read_csv(churn_data_path)
@@ -1278,23 +1215,16 @@ if __name__ == '__main__':
     columns = ['age', 'workclass', 'fnlwgt', 'education', 'education-num', 'marital-status', 'occupation',
                'relationship',
                'race', 'sex', 'capital-gain', 'capital-loss', 'hours-per-week', 'native-country', 'income']
-<<<<<<< HEAD
     train_df = pd.read_csv(adult_data_path + '/adult.data', names=columns, header=None, sep=", ", engine='python')
     test_df = pd.read_csv(adult_data_path + '/adult.test', names=columns, header=None, sep=", ", engine='python')
     train_df, test_df = preprocess_adult_data(train_df=train_df, test_df=test_df, label='income',
                                               num_of_features=num_of_feature)
-=======
-    train_df = pd.read_csv(adult_data_path+'/adult.data', names=columns, header=None, sep=", ", engine='python')
-    test_df = pd.read_csv(adult_data_path + '/adult.test', names=columns, header=None, sep=", ", engine='python')
-    train_df, test_df = preprocess_adult_data(train_df=train_df, test_df=test_df, label='income', num_of_features=num_of_feature)
->>>>>>> 4ac3c13078168c5aa2e607a73f0c6526fc7a234a
 
     # preprocess credit card fraud dataset
     crd_fraud_df = pd.read_csv(fraud_data_path)
     crd_fraud_df = preprocess_credit_card(crd_fraud_df, 'Class', fract_neg_class=-1, num_of_negative_sample=5000,
                                           num_of_features=num_of_feature)
 
-<<<<<<< HEAD
     bank_df = pd.read_csv(bank_data_path, sep=";")
     bank_df = preprocess_bank_data(bank_df, 'y', 10)
 
@@ -1317,16 +1247,3 @@ if __name__ == '__main__':
     elif dataset_to_use == 4:
         run_bank_all(bank_df, 'y', boosting_rounds, lgr_miter, lgr_lr, ab_learner_miter, ab_learner_lr,
                      ab_learner_estop)
-=======
-    if dataset_to_use == 0:
-        run_churn_all(df, 'Churn', boosting_rounds)
-        run_adult_all(train_df, test_df, 'income', boosting_rounds)
-        run_fraud_all(crd_fraud_df, 'Class', boosting_rounds)
-    elif dataset_to_use == 1:
-        run_churn_all(df, 'Churn', boosting_rounds)
-    elif dataset_to_use == 2:
-        run_adult_all(train_df, test_df, 'income', boosting_rounds)
-    else:
-        run_fraud_all(crd_fraud_df, 'Class', boosting_rounds)
-
->>>>>>> 4ac3c13078168c5aa2e607a73f0c6526fc7a234a
